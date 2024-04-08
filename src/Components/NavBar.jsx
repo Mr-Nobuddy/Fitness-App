@@ -12,14 +12,12 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  // const navigate = useNavigate();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -34,9 +32,16 @@ const NavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const pages = [
+    "Calorie Counter",
+    "Track your Workout",
+    "Search Workout",
+    "Search recipes",
+  ];
+  const settings = ["Profile", "Log out"];
   return (
-    <Box sx={{margin:"20px"}}>
-      <AppBar position="static" sx={{borderRadius:"50px"}}>
+    <Box sx={{ margin: "20px" }}>
+      <AppBar position="static" sx={{ borderRadius: "50px" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" } }} />
