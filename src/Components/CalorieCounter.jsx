@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-
+import NavBar from "./NavBar";
 
 const Home = () => {
   const caloie = 200;
@@ -29,10 +29,10 @@ const Home = () => {
   const [protien, setProtien] = React.useState("");
   const [carbo, setCarbo] = React.useState("");
   const [fats, setFats] = React.useState("");
-  const [fibre,setFibre] = React.useState("");
+  const [fibre, setFibre] = React.useState("");
   const [show, setShow] = React.useState(false);
+  const [check, setCheck] = React.useState({ msg: "", flag: false });
   const [breakfast, setBreakFast] = React.useState([]);
-  
 
   const options = {
     method: "GET",
@@ -48,7 +48,10 @@ const Home = () => {
   const handleSearch = async () => {
     try {
       const response = await axios.request(options).then((res) => {
-        console.log(res.data[0]);
+        console.log(res);
+        if (res.data.length === 0) {
+          setCheck({ msg: "No such item found", flag: true });
+        }
         setName(res.data[0].name);
         setCalorie(res.data[0].calories);
         setProtien(res.data[0].protein_g);
@@ -65,7 +68,8 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ margin: 0, padding: "20px", paddingTop: "10px", gap: 10 }}>
+    <Box sx={{ margin: 0, padding: "20px", paddingTop: "10px", gap: 10 , backgroundColor:"yellow"}}>
+      <NavBar />
       <Stack direction="row">
         <Box
           width="40%"
@@ -182,7 +186,10 @@ const Home = () => {
             alignItems: "center",
           }}
         >
-          <Card sx={{ minWidth: 300, width: "50%", marginTop: "20px"}} elevation={3}>
+          <Card
+            sx={{ minWidth: 300, width: "50%", marginTop: "20px" }}
+            elevation={3}
+          >
             <CardContent>
               <Typography
                 sx={{
@@ -193,6 +200,7 @@ const Home = () => {
               >
                 {name}
               </Typography>
+
               <Stack sx={{ marginBottom: "10px" }} direction="row">
                 <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
                   Calories

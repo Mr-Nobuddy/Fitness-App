@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -33,10 +33,10 @@ const NavBar = () => {
     setAnchorElUser(null);
   };
   const pages = [
-    "Calorie Counter",
-    "Track your Workout",
-    "Search Workout",
-    "Search recipes",
+    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/caloricounter')}>Calorie Counter</Typography>,
+    <Typography sx={{fontSize:"0.9rem"}}>Track Workout</Typography>,
+    <Typography sx={{fontSize:"0.9rem"}}>Search workout</Typography>,
+    <Typography sx={{fontSize:"0.9rem"}}>Search recepies</Typography>,
   ];
   const settings = ["Profile", "Log out"];
   return (
