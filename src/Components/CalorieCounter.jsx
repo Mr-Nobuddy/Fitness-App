@@ -16,13 +16,12 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import NavBar from "./NavBar";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Home = () => {
-  const caloie = 200;
-  const maxcalorie = 1600;
-  const value = `${caloie}/${maxcalorie}`;
-
   const [searchFood, setSearchFood] = React.useState("");
+  const [servings, setServings] = React.useState(1);
 
   const [name, setName] = React.useState("");
   const [calorie, setCalorie] = React.useState("");
@@ -31,44 +30,58 @@ const Home = () => {
   const [fats, setFats] = React.useState("");
   const [fibre, setFibre] = React.useState("");
   const [show, setShow] = React.useState(false);
+  const [showLoader, setShowLoader] = React.useState(false);
   const [check, setCheck] = React.useState({ msg: "", flag: false });
   const [breakfast, setBreakFast] = React.useState([]);
+  const [lunch, setLunch] = React.useState([]);
+  const [dinner, setDinner] = React.useState([]);
 
-  const options = {
-    method: "GET",
-    url: "https://nutrition-by-api-ninjas.p.rapidapi.com/v1/nutrition",
-    params: {
-      query: searchFood,
-    },
-    headers: {
-      "X-RapidAPI-Key": "f775f70b37msh97fa7ed0c6cd78cp17d0a4jsn0725e9aaad31",
-      "X-RapidAPI-Host": "nutrition-by-api-ninjas.p.rapidapi.com",
-    },
-  };
+  const [cal, setCal] = React.useState(0);
+  const maxcalorie = 1600;
+  const value = `${cal}/${maxcalorie}`;
+
   const handleSearch = async () => {
     try {
-      const response = await axios.request(options).then((res) => {
-        console.log(res);
-        if (res.data.length === 0) {
-          setCheck({ msg: "No such item found", flag: true });
+      setShowLoader(true);
+      setShow(false);
+      const response = await axios.post(
+        "https://trackapi.nutritionix.com/v2/natural/nutrients",
+        {
+          query: searchFood,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-app-id": "1a299a7b",
+            "x-app-key": "eedf9d333e690c05a2e66f2f26ff301c",
+          },
         }
-        setName(res.data[0].name);
-        setCalorie(res.data[0].calories);
-        setProtien(res.data[0].protein_g);
-        setCarbo(res.data[0].carbohydrates_total_g);
-        setFats(res.data[0].fat_total_g);
-        setFibre(res.data[0].fiber_g);
-        setShow(true);
-        // console.log(calorie,protien,carbo,fats);
-      });
-      // console.log(response);
+      );
+      // console.log(response.data.foods[0].food_name);
+      setShowLoader(false);
+      setName(response.data.foods[0].food_name);
+      setCalorie(response.data.foods[0].nf_calories * servings);
+      setProtien(response.data.foods[0].nf_protein * servings);
+      setCarbo(response.data.foods[0].nf_total_carbohydrate * servings);
+      setFats(response.data.foods[0].nf_total_fat * servings);
+      setFibre(response.data.foods[0].nf_dietary_fiber * servings);
+      setShow(true);
+      // Handle the response data here
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <Box sx={{ margin: 0, padding: "20px", paddingTop: "10px", gap: 10 , backgroundColor:"yellow"}}>
+    <Box
+      sx={{
+        margin: 0,
+        padding: "20px",
+        paddingTop: "10px",
+        gap: 10,
+        backgroundColor: "yellow",
+      }}
+    >
       <NavBar />
       <Stack direction="row">
         <Box
@@ -82,7 +95,7 @@ const Home = () => {
           <Gauge
             width={250}
             height={250}
-            value={caloie}
+            value={cal}
             valueMin={0}
             valueMax={maxcalorie}
           />
@@ -142,8 +155,8 @@ const Home = () => {
       </Typography>
       <Box
         sx={{
-          paddingLeft: "50px",
-          paddingRight: "50px",
+          paddingLeft: "30px",
+          paddingRight: "30px",
           display: "flex",
           justifyContent: "space-between",
         }}
@@ -158,22 +171,48 @@ const Home = () => {
             "& label": { color: "black" },
             "& input": { color: "black" },
             "&:hover": { borderColor: "black" },
-            width: "75%",
+            width: "49%",
           }}
         />
+        <TextField
+          id="outlined-basic"
+          label="Enter the servings"
+          variant="outlined"
+          onChange={(e) => setServings(e.target.value)}
+          sx={{
+            "& fieldset": { borderColor: "black" },
+            "& label": { color: "black" },
+            "& input": { color: "black" },
+            "&:hover": { borderColor: "black" },
+            width: "49%",
+          }}
+        />
+      </Box>
+      <Box
+        sx={{
+          marginTop: "20px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Button
           variant="contained"
           sx={{
-            width: "20%",
+            width: "40%",
             height: "55px",
             "&:hover": { backgroundColor: "black" },
             borderRadius: "50px",
+            marginBottom:"20px"
           }}
           onClick={handleSearch}
         >
           {" "}
           Search{" "}
         </Button>
+      </Box>
+      <Box sx={{ display: showLoader ? "flex" : "none",width:"100%",justifyContent:"center",alignItems:"center"}}>
+        <CircularProgress />
       </Box>
       {show ? (
         <Box
@@ -191,15 +230,29 @@ const Home = () => {
             elevation={3}
           >
             <CardContent>
-              <Typography
-                sx={{
-                  fontWeight: "900",
-                  fontSize: "2rem",
-                  textAlign: "center",
-                }}
-              >
-                {name}
-              </Typography>
+              <Stack sx={{ marginBottom: "10px" }} direction="row">
+                <Typography
+                  sx={{
+                    fontWeight: "900",
+                    fontSize: "2.2rem",
+                    textAlign: "center",
+                  }}
+                >
+                  {name}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "1.1rem",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                  // onClick={() => setShow(false)}
+                >
+                  <IoIosCloseCircleOutline size={40} onClick={() => setShow(false)} style={{cursor:"pointer"}}/>
+                </Typography>
+              </Stack>
 
               <Stack sx={{ marginBottom: "10px" }} direction="row">
                 <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
@@ -286,14 +339,17 @@ const Home = () => {
                 </Typography>
               </Stack>
             </CardContent>
-            <CardActions
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Stack direction="row" spacing={6}>
+            <CardActions>
+              <Stack
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+                direction="row"
+                spacing={4}
+              >
                 <Button variant="contained">Add to Breakfast</Button>
                 <Button variant="contained">Add to Lunch</Button>
                 <Button variant="contained">Add to Dinner</Button>
@@ -304,7 +360,7 @@ const Home = () => {
       ) : (
         ""
       )}
-      <Box sx={{ marginTop: "20px", width: "100%" }}>
+      <Box sx={{ marginTop: "20px", width: "100%" ,marginBottom:"70px"}}>
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

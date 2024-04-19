@@ -8,14 +8,20 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 // import NavBar from "./Components/NavBar";
 import TrackWorkout from "./Components/TrackWorkout";
+import SignIn from "./Components/SignIn";
+import SearchWorkout from './Components/SearchWorkout';
+import SearchRecepies from './Components/SearchRecepies';
 function App() {
   return (
     <div className="App" >
       {/* <NavBar/> */}
       <Router>
         <Routes>
-          <Route path="/" element={<CalorieCounter/>}/>
-          <Route path='/caloricounter' element={<TrackWorkout/>}/>
+          <Route path='/' element={<SignIn/>}/>
+          <Route path="/caloriecounter" element={<CalorieCounter/>}/>
+          <Route path='/trackworkout' element={<TrackWorkout/>}/>
+          <Route path="/searchworkout" element={<SearchWorkout/>}/>
+          <Route path="/searchrecepies" element={<SearchRecepies/>}/>
         </Routes>
       </Router>
     </div>

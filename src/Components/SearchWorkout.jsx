@@ -1,8 +1,12 @@
+import { Box } from '@mui/material'
 import React from 'react'
+import NavBar from './NavBar'
 
 const SearchWorkout = () => {
   return (
-    <div>SearchWorkout</div>
+    <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "96.2vh" }}>
+      <NavBar/>
+    </Box>
   )
 }
 

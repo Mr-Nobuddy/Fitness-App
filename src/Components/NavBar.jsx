@@ -33,10 +33,10 @@ const NavBar = () => {
     setAnchorElUser(null);
   };
   const pages = [
-    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/caloricounter')}>Calorie Counter</Typography>,
-    <Typography sx={{fontSize:"0.9rem"}}>Track Workout</Typography>,
-    <Typography sx={{fontSize:"0.9rem"}}>Search workout</Typography>,
-    <Typography sx={{fontSize:"0.9rem"}}>Search recepies</Typography>,
+    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/caloriecounter')}>Calorie Counter</Typography>,
+    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/trackworkout')}>Track Workout</Typography>,
+    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/searchworkout')}>Search workout</Typography>,
+    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/searchrecepies')}>Search recepies</Typography>,
   ];
   const settings = ["Profile", "Log out"];
   return (
