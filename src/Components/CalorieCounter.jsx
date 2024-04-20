@@ -17,7 +17,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import NavBar from "./NavBar";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Home = () => {
   const [searchFood, setSearchFood] = React.useState("");
@@ -203,7 +203,7 @@ const Home = () => {
             height: "55px",
             "&:hover": { backgroundColor: "black" },
             borderRadius: "50px",
-            marginBottom:"20px"
+            marginBottom: "20px",
           }}
           onClick={handleSearch}
         >
@@ -211,7 +211,14 @@ const Home = () => {
           Search{" "}
         </Button>
       </Box>
-      <Box sx={{ display: showLoader ? "flex" : "none",width:"100%",justifyContent:"center",alignItems:"center"}}>
+      <Box
+        sx={{
+          display: showLoader ? "flex" : "none",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <CircularProgress />
       </Box>
       {show ? (
@@ -235,7 +242,9 @@ const Home = () => {
                   sx={{
                     fontWeight: "900",
                     fontSize: "2.2rem",
-                    textAlign: "center",
+                    textAlign: "start",
+                    width: "80%",
+                    // border:"1px solid black"
                   }}
                 >
                   {name}
@@ -246,11 +255,33 @@ const Home = () => {
                     display: "flex",
                     justifyContent: "flex-end",
                     alignItems: "center",
-                    width: "100%",
+                    width: "20%",
+                    // border:"1px solid black"
                   }}
                   // onClick={() => setShow(false)}
                 >
-                  <IoIosCloseCircleOutline size={40} onClick={() => setShow(false)} style={{cursor:"pointer"}}/>
+                  <IoIosCloseCircleOutline
+                    size={40}
+                    onClick={() => setShow(false)}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Typography>
+              </Stack>
+
+              <Stack sx={{ marginBottom: "10px" }} direction="row">
+                <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
+                  Servings
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "1.1rem",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  {servings}
                 </Typography>
               </Stack>
 
@@ -360,7 +391,7 @@ const Home = () => {
       ) : (
         ""
       )}
-      <Box sx={{ marginTop: "20px", width: "100%" ,marginBottom:"70px"}}>
+      <Box sx={{ marginTop: "20px", width: "100%", marginBottom: "70px" }}>
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

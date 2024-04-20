@@ -93,15 +93,15 @@ const TrackWorkout = () => {
               alignItems: "center",
             }}
           >
-            <Card sx={{ minWidth: 275, width: "50%" }} elevation={3}>
+            <Card sx={{ minWidth: 275, width: "50%", borderRadius:"20px" }} elevation={3}>
               <CardContent>
                 <Stack direction="row" sx={{ marginBottom: "10px" }}>
                   <Typography
                     sx={{
                       fontWeight: "900",
                       fontSize: "1.5rem",
-                      textAlign: "center",
-                      width: "50%",
+                      textAlign: "start",
+                      width: "70%",
                     }}
                   >
                     {ex_name}
@@ -112,7 +112,7 @@ const TrackWorkout = () => {
                       display: "flex",
                       justifyContent: "flex-end",
                       alignItems: "center",
-                      width: "100%",
+                      width: "30%",
                       cursor: "pointer",
                     }}
                     onClick={() => setShow(false)}
