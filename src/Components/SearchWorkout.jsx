@@ -5,11 +5,14 @@ import axios from "axios";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
+import { DataGrid } from "@mui/x-data-grid";
 
 const SearchWorkout = () => {
   const [search_ex, setSearchEx] = useState("");
   const [show, setShow] = useState(false);
+  const [exercises, setExercises] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
+
   const [bodypart, setBodyPart] = useState("");
   const [equipment, setEquipment] = useState("");
   const [gif, setGif] = useState("");
@@ -29,15 +32,94 @@ const SearchWorkout = () => {
   };
   const handleSearch = async () => {
     try {
+      setShowLoader(true);
+      setShow(false);
       const response = await axios.request(options);
-      console.log(response.data);
+      // console.log(response.data);
+      setShowLoader(false);
+      setExercises(response.data);
+      setShow(true);
+      // console.log(exercises);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const columns = [
+    { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "bodypart",
+      headerName: "Body Part",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "equipment",
+      headerName: "Equipment",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "gif",
+      headerName: "Representation",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "workout",
+      headerName: "Exercise Name",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "targetmuscle",
+      headerName: "Target Muscle",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "secondarymuscles",
+      headerName: "Secondary Muscles",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "instructions",
+      headerName: "Instructions",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: 160,
+      valueGetter: (value, row) =>
+        `${row.firstName || ""} ${row.lastName || ""}`,
+    },
+  ];
+
+  // const rows = [
+  //   exercises.map((item) => ({
+  //     id: item.id,
+  //     bodypart: item.bodyPart,
+  //     equipment: item.equipment,
+  //     gif: <img src={item.gifUrl} alt="GIF" />,
+  //     workout: item.name,
+  //     targetmuscle: item.target,
+  //     secondarymuscles: [item.secondaryMuscles],
+  //     instructions: [item.instructions],
+  //   })),
+  // ];
+
+  const rows = exercises.map((item) => ({
+    id: item.id,
+    bodypart: item.bodyPart,
+    equipment: item.equipment,
+    gif: <img src={item.gifUrl} alt="GIF" />,
+    workout: item.name,
+    targetmuscle: item.target,
+    secondarymuscles: [item.secondaryMuscles],
+    instructions: [item.instructions],
+  }));
+
   return (
-    <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "96.2vh" }}>
+    <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "120vh" }}>
       <NavBar />
       <Box
         sx={{
@@ -76,35 +158,22 @@ const SearchWorkout = () => {
 
       <Box>
         {show ? (
-          <Box
-            sx={{
-              borderRadius: "50px",
-              marginLeft: "50px",
-              marginRight: "50px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Card
-              sx={{ minWidth: 275, width: "50%", borderRadius: "20px" }}
-              elevation={3}
-            >
-              <CardContent>
-                <Stack direction="row" sx={{ marginBottom: "10px" }}>
-                  {/* <Typography
-                    sx={{
-                      fontWeight: "900",
-                      fontSize: "1.5rem",
-                      textAlign: "start",
-                      width: "70%",
-                    }}
-                  >
-                    {}
-                  </Typography> */}
-                </Stack>
-              </CardContent>
-            </Card>
+          <Box sx={{ height: 400, width: "100%" }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    pageSize: 5,
+                  },
+                },
+              }}
+              pageSizeOptions={[5]}
+              checkboxSelection
+              disableRowSelectionOnClick
+              sx={{borderColor:"black"}}
+            />
           </Box>
         ) : (
           ""
