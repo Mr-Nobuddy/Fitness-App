@@ -6,6 +6,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { DataGrid } from "@mui/x-data-grid";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const SearchWorkout = () => {
   const [search_ex, setSearchEx] = useState("");
@@ -50,37 +51,38 @@ const SearchWorkout = () => {
     {
       field: "bodypart",
       headerName: "Body Part",
-      width: 150,
+      width: 200,
       editable: true,
     },
     {
       field: "equipment",
       headerName: "Equipment",
-      width: 150,
+      width: 200,
       editable: true,
     },
     {
       field: "gif",
       headerName: "Representation",
-      width: 150,
+      width: 200,
       editable: true,
+      renderCell : (params) => <img src={params.value} alt="GIF" width={200} height={200}/>
     },
     {
       field: "workout",
       headerName: "Exercise Name",
-      width: 150,
+      width: 200,
       editable: true,
     },
     {
       field: "targetmuscle",
       headerName: "Target Muscle",
-      width: 150,
+      width: 200,
       editable: true,
     },
     {
       field: "secondarymuscles",
       headerName: "Secondary Muscles",
-      width: 150,
+      width: 200,
       editable: true,
     },
     {
@@ -88,30 +90,16 @@ const SearchWorkout = () => {
       headerName: "Instructions",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 160,
+      width: 200,
       valueGetter: (value, row) =>
-        `${row.firstName || ""} ${row.lastName || ""}`,
+        `${row.instructions || ""}`,
     },
   ];
-
-  // const rows = [
-  //   exercises.map((item) => ({
-  //     id: item.id,
-  //     bodypart: item.bodyPart,
-  //     equipment: item.equipment,
-  //     gif: <img src={item.gifUrl} alt="GIF" />,
-  //     workout: item.name,
-  //     targetmuscle: item.target,
-  //     secondarymuscles: [item.secondaryMuscles],
-  //     instructions: [item.instructions],
-  //   })),
-  // ];
-
   const rows = exercises.map((item) => ({
     id: item.id,
     bodypart: item.bodyPart,
     equipment: item.equipment,
-    gif: <img src={item.gifUrl} alt="GIF" />,
+    gif: item.gifUrl,
     workout: item.name,
     targetmuscle: item.target,
     secondarymuscles: [item.secondaryMuscles],
@@ -119,7 +107,7 @@ const SearchWorkout = () => {
   }));
 
   return (
-    <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "120vh" }}>
+    <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "200vh" }}>
       <NavBar />
       <Box
         sx={{
@@ -155,10 +143,12 @@ const SearchWorkout = () => {
           Search
         </Button>
       </Box>
-
+      <Box sx={{ display: showLoader ? "flex" : "none",width:"100%",justifyContent:"center",alignItems:"center"}}>
+        <CircularProgress />
+      </Box>
       <Box>
         {show ? (
-          <Box sx={{ height: 400, width: "100%" }}>
+          <Box sx={{ height: 800, width: "100%" }}>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -169,6 +159,7 @@ const SearchWorkout = () => {
                   },
                 },
               }}
+              rowHeight={200}
               pageSizeOptions={[5]}
               checkboxSelection
               disableRowSelectionOnClick
