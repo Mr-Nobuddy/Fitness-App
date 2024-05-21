@@ -129,7 +129,7 @@ const Home = () => {
             color="success"
           />
 
-          <Typography>Fibre</Typography>
+          <Typography>Fiber</Typography>
           <Slider
             disabled
             defaultValue={40}
@@ -355,7 +355,7 @@ const Home = () => {
 
               <Stack sx={{ marginBottom: "10px" }} direction="row">
                 <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
-                  Fibre
+                  Fiber
                 </Typography>
                 <Typography
                   sx={{
