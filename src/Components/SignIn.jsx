@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { Divider } from "@mui/material";
+import { FcGoogle } from "react-icons/fc";
 
 function Copyright(props) {
   return (
@@ -103,6 +105,16 @@ export default function SignIn() {
               onClick={() => navigate("/caloriecounter")}
             >
               Sign In
+            </Button>
+            <Divider>OR</Divider>
+            <Button
+              type="submit"
+              fullWidth
+              variant="outlined"
+              sx={{ mt: 2, mb: 2 }}
+              href="http://localhost:2604/auth/google"
+            >
+              <FcGoogle size={33} style={{ marginRight: "5px" }} /> Sign In
             </Button>
             <Grid container>
               <Grid item xs>

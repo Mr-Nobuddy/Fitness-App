@@ -11,6 +11,7 @@ import TrackWorkout from "./Components/TrackWorkout";
 import SignIn from "./Components/SignIn";
 import SearchWorkout from './Components/SearchWorkout';
 import SearchRecepies from './Components/SearchRecepies';
+import Profile from "./Components/Profile";
 function App() {
   return (
     <div className="App" >
@@ -22,6 +23,7 @@ function App() {
           <Route path='/trackworkout' element={<TrackWorkout/>}/>
           <Route path="/searchworkout" element={<SearchWorkout/>}/>
           <Route path="/searchrecepies" element={<SearchRecepies/>}/>
+          <Route path="/profile" element={<Profile/>}/>
         </Routes>
       </Router>
     </div>

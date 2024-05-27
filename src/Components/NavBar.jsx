@@ -33,12 +33,42 @@ const NavBar = () => {
     setAnchorElUser(null);
   };
   const pages = [
-    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/caloriecounter')}>Calorie Counter</Typography>,
-    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/trackworkout')}>Track Workout</Typography>,
-    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/searchworkout')}>Search workout</Typography>,
-    <Typography sx={{fontSize:"0.9rem"}} onClick={() => navigate('/searchrecepies')}>Search recepies</Typography>,
+    <Typography
+      sx={{ fontSize: "0.9rem" }}
+      onClick={() => navigate("/caloriecounter")}
+    >
+      Calorie Counter
+    </Typography>,
+    <Typography
+      sx={{ fontSize: "0.9rem" }}
+      onClick={() => navigate("/trackworkout")}
+    >
+      Track Workout
+    </Typography>,
+    <Typography
+      sx={{ fontSize: "0.9rem" }}
+      onClick={() => navigate("/searchworkout")}
+    >
+      Search workout
+    </Typography>,
+    <Typography
+      sx={{ fontSize: "0.9rem" }}
+      onClick={() => navigate("/searchrecepies")}
+    >
+      Search recepies
+    </Typography>,
   ];
-  const settings = ["Profile", "Log out"];
+  const settings = [
+    <Typography
+      sx={{ fontSize: "0.9rem" }}
+      onClick={() => navigate("/profile")}
+    >
+      Profile
+    </Typography>,
+    <Typography sx={{ fontSize: "0.9rem" }} onClick={() => navigate("/")}>
+      Log out
+    </Typography>,
+  ];
   return (
     <Box sx={{ margin: "20px" }}>
       <AppBar position="static" sx={{ borderRadius: "50px" }}>

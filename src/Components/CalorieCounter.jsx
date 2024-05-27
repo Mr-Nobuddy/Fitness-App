@@ -5,7 +5,6 @@ import { Gauge } from "@mui/x-charts/Gauge";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
