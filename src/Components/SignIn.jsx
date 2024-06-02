@@ -40,14 +40,14 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get("email"),
+  //     password: data.get("password"),
+  //   });
+  // };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -64,12 +64,16 @@ export default function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{ fontFamily: `"Fraunces", serif`,color:"black" }}
+          >
             Sign in
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -82,6 +86,18 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              sx={{
+                "& fieldset": {
+                  borderColor: "black",
+                  fontFamily: `"Fraunces", serif`,
+                },
+                "& label": { color: "black", fontFamily: `"Fraunces", serif` },
+                "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+                "&:hover": {
+                  borderColor: "black",
+                  fontFamily: `"Fraunces", serif`,
+                },
+              }}
             />
             <TextField
               margin="normal"
@@ -92,38 +108,73 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              sx={{
+                "& fieldset": {
+                  borderColor: "black",
+                  fontFamily: `"Fraunces", serif`,
+                },
+                "& label": { color: "black", fontFamily: `"Fraunces", serif` },
+                "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+                "&:hover": {
+                  borderColor: "black",
+                  fontFamily: `"Fraunces", serif`,
+                },
+              }}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="default" />}
               label="Remember me"
+              sx={{ fontFamily: `"Fraunces", serif`,"& label": { color: "white", fontFamily: `"Fraunces", serif` }, }}
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3,
+                mb: 2,
+                fontFamily: `"Fraunces", serif`,
+                transition: "all ease 0.2s",
+                "&:hover": { backgroundColor: "black", scale: "110%" },
+                "&:active": { scale: "99%" },
+              }}
               onClick={() => navigate("/caloriecounter")}
             >
               Sign In
             </Button>
-            <Divider>OR</Divider>
+            <Divider sx={{ fontFamily: `"Fraunces", serif` }}>OR</Divider>
             <Button
               type="submit"
               fullWidth
               variant="outlined"
-              sx={{ mt: 2, mb: 2 }}
+              sx={{
+                mt: 2,
+                mb: 2,
+                fontFamily: `"Fraunces", serif`,
+                transition: "all ease 0.2s",
+                "&:hover": { backgroundColor: "black", scale: "110%",color:"white" },
+                "&:active": { scale: "99%" },
+              }}
               href="http://localhost:2604/auth/google"
             >
               <FcGoogle size={33} style={{ marginRight: "5px" }} /> Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link
+                  href="#"
+                  variant="body2"
+                  sx={{ fontFamily: `"Fraunces", serif` }}
+                >
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link
+                  href="#"
+                  variant="body2"
+                  sx={{ fontFamily: `"Fraunces", serif` }}
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -62,10 +62,10 @@ const SearchRecepies = () => {
           label="Search for tasty yet healthy recepies"
           sx={{
             width: "40%",
-            "& fieldset": { borderColor: "black" },
-            "& label": { color: "black" },
-            "& input": { color: "black" },
-            "&:hover": { borderColor: "black" },
+            "& fieldset": { borderColor: "black" ,fontFamily:`"Fraunces", serif`},
+            "& label": { color: "black" ,fontFamily:`"Fraunces", serif`},
+            "& input": { color: "black" ,fontFamily:`"Fraunces", serif`},
+            "&:hover": { borderColor: "black",fontFamily:`"Fraunces", serif` },
           }}
           onChange={(e) => setSearchRec(e.target.value)}
         />
@@ -73,8 +73,10 @@ const SearchRecepies = () => {
           variant="contained"
           sx={{
             width: "10%",
-            "&:hover": { backgroundColor: "black", color: "#fff" },
+            "&:hover": { backgroundColor: "black" ,scale:"110%"},
+            "&:active":{scale:"90%"},
             transition: "0.2s ease-in-out",
+            fontFamily:`"Fraunces", serif`
           }}
           onClick={handleSearch}
         >
@@ -101,16 +103,16 @@ const SearchRecepies = () => {
                 id="panel1-header"
                 sx={{backgroundColor:"#000",color:"#fff"}}
               >
-                <Typography sx={{fontSize:"2em"}}>{item.title}</Typography>
+                <Typography sx={{fontSize:"2em",fontFamily:`"Fraunces", serif`}}>{item.title}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box>
-                  <Typography sx={{fontSize:"1.3em",fontWeight:800,marginBottom:"10px"}}>Ingredients</Typography>
-                  <Typography sx={{marginBottom:"20px"}}>{item.ingredients}</Typography>
+                  <Typography sx={{fontSize:"1.3em",fontWeight:800,marginBottom:"10px",fontFamily:`"Fraunces", serif`}}>Ingredients</Typography>
+                  <Typography sx={{marginBottom:"20px",fontFamily:`"Fraunces", serif`}}>{item.ingredients}</Typography>
                 </Box>
                 <Box>
-                  <Typography sx={{fontSize:"1.3em",fontWeight:800,marginBottom:"10px"}}>Instructions</Typography>
-                  <Typography sx={{marginBottom:"20px"}}>{item.instructions}</Typography>
+                  <Typography sx={{fontSize:"1.3em",fontWeight:800,marginBottom:"10px",fontFamily:`"Fraunces", serif`}}>Instructions</Typography>
+                  <Typography sx={{marginBottom:"20px",fontFamily:`"Fraunces", serif`}}>{item.instructions}</Typography>
                 </Box>
               </AccordionDetails>
             </Accordion>

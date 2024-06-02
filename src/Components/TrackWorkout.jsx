@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 
@@ -47,15 +47,15 @@ const TrackWorkout = () => {
   };
   return (
     <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "96.2vh" }}>
-      <NavBar/>
+      <NavBar />
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           gap: 2,
           justifyContent: "center",
-          marginBottom:"10px",
-          marginTop:"20px"
+          marginBottom: "10px",
+          marginTop: "20px",
         }}
       >
         <TextField
@@ -64,21 +64,40 @@ const TrackWorkout = () => {
           onChange={(e) => setMessage(e.target.value)}
           sx={{
             width: "40%",
-            "& fieldset": { borderColor: "black" },
-            "& label": { color: "black" },
-            "& input": { color: "black" },
-            "&:hover": { borderColor: "black" },
+            "& fieldset": {
+              borderColor: "black",
+              fontFamily: `"Fraunces", serif`,
+            },
+            "& label": { color: "black", fontFamily: `"Fraunces", serif` },
+            "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+            "&:hover": {
+              borderColor: "black",
+              fontFamily: `"Fraunces", serif`,
+            },
           }}
         />
         <Button
           variant="contained"
-          sx={{ width: "10%","&:hover":{backgroundColor:"black",color:"#fff"},transition:"0.2s ease-in-out" }}
+          sx={{
+            width: "10%",
+            "&:hover": { backgroundColor: "black" ,scale:"110%"},
+            "&:active":{scale:"90%"},
+            transition: "0.2s ease-in-out",
+            fontFamily: `"Fraunces", serif`,
+          }}
           onClick={handleSearch}
         >
           Search
         </Button>
       </Box>
-      <Box sx={{ display: showLoader ? "flex" : "none",width:"100%",justifyContent:"center",alignItems:"center"}}>
+      <Box
+        sx={{
+          display: showLoader ? "flex" : "none",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <CircularProgress />
       </Box>
       <Box>
@@ -93,7 +112,10 @@ const TrackWorkout = () => {
               alignItems: "center",
             }}
           >
-            <Card sx={{ minWidth: 275, width: "50%", borderRadius:"20px" }} elevation={3}>
+            <Card
+              sx={{ minWidth: 275, width: "50%", borderRadius: "20px" }}
+              elevation={3}
+            >
               <CardContent>
                 <Stack direction="row" sx={{ marginBottom: "10px" }}>
                   <Typography
@@ -102,6 +124,7 @@ const TrackWorkout = () => {
                       fontSize: "1.5rem",
                       textAlign: "start",
                       width: "70%",
+                      fontFamily: `"Fraunces", serif`,
                     }}
                   >
                     {ex_name}
@@ -114,6 +137,7 @@ const TrackWorkout = () => {
                       alignItems: "center",
                       width: "30%",
                       cursor: "pointer",
+                      fontFamily: `"Fraunces", serif`,
                     }}
                     onClick={() => setShow(false)}
                   >
@@ -123,7 +147,12 @@ const TrackWorkout = () => {
 
                 <Stack sx={{ marginBottom: "10px" }} direction="row">
                   <Typography
-                    sx={{ fontWeight: "900", fontSize: "1.5rem", width: "50%" }}
+                    sx={{
+                      fontWeight: "900",
+                      fontSize: "1.5rem",
+                      width: "50%",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
                   >
                     Burned Calories
                   </Typography>
@@ -134,6 +163,7 @@ const TrackWorkout = () => {
                       justifyContent: "flex-end",
                       alignItems: "center",
                       width: "100%",
+                      fontFamily: `"Fraunces", serif`,
                     }}
                   >
                     {burnedCalories}
@@ -142,7 +172,12 @@ const TrackWorkout = () => {
 
                 <Stack sx={{ marginBottom: "10px" }} direction="row">
                   <Typography
-                    sx={{ fontWeight: "900", fontSize: "1.5rem", width: "50%" }}
+                    sx={{
+                      fontWeight: "900",
+                      fontSize: "1.5rem",
+                      width: "50%",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
                   >
                     Duration
                   </Typography>
@@ -153,6 +188,7 @@ const TrackWorkout = () => {
                       justifyContent: "flex-end",
                       alignItems: "center",
                       width: "100%",
+                      fontFamily: `"Fraunces", serif`,
                     }}
                   >
                     {duration} minutes
@@ -166,7 +202,17 @@ const TrackWorkout = () => {
                   alignItems: "center",
                 }}
               >
-                <Button size="small" variant="contained" sx={{ width: "50px" }}>
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    width: "50px",
+                    fontFamily: `"Fraunces", serif`,
+                    "&:hover": { backgroundColor: "black", scale: "110%" },
+                    "&:active": { scale: "90%" },
+                    transition: "0.2s ease-in-out",
+                  }}
+                >
                   Add
                 </Button>
               </CardActions>

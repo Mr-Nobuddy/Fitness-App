@@ -17,6 +17,7 @@ import CardContent from "@mui/material/CardContent";
 import NavBar from "./NavBar";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import CircularProgress from "@mui/material/CircularProgress";
+import { grey } from '@mui/material/colors';
 
 const Home = () => {
   const [searchFood, setSearchFood] = React.useState("");
@@ -94,22 +95,31 @@ const Home = () => {
           <Gauge
             width={250}
             height={250}
-            value={cal}
+            value={value}
             valueMin={0}
             valueMax={maxcalorie}
           />
         </Box>
         <Stack width="60%" direction="column" sx={{ paddingRight: "10%" }}>
-          <Typography>Protiens</Typography>
+          <Typography
+            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1rem" }}
+          >
+            Protiens
+          </Typography>
           <Slider
             disabled
             defaultValue={70}
             aria-label="Disabled slider"
             max={100}
             min={0}
+            color={grey[900]}
           />
 
-          <Typography>Carbohydrates</Typography>
+          <Typography
+            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" }}
+          >
+            Carbohydrates
+          </Typography>
           <Slider
             disabled
             defaultValue={10}
@@ -118,7 +128,11 @@ const Home = () => {
             min={0}
           />
 
-          <Typography>Fats</Typography>
+          <Typography
+            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" }}
+          >
+            Fats
+          </Typography>
           <Slider
             disabled
             defaultValue={20}
@@ -128,7 +142,11 @@ const Home = () => {
             color="success"
           />
 
-          <Typography>Fiber</Typography>
+          <Typography
+            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" }}
+          >
+            Fiber
+          </Typography>
           <Slider
             disabled
             defaultValue={40}
@@ -146,8 +164,9 @@ const Home = () => {
           justifyContent: "center",
           alignItems: "center",
           fontWeight: "900",
-          fontSize: "2rem",
+          fontSize: "2.2rem",
           marginBottom: "10px",
+          fontFamily: `"Fraunces", serif`,
         }}
       >
         Add your meals
@@ -166,11 +185,18 @@ const Home = () => {
           variant="outlined"
           onChange={(e) => setSearchFood(e.target.value)}
           sx={{
-            "& fieldset": { borderColor: "black" },
-            "& label": { color: "black" },
-            "& input": { color: "black" },
-            "&:hover": { borderColor: "black" },
+            "& fieldset": {
+              borderColor: "black",
+              fontFamily: `"Fraunces", serif`,
+            },
+            "& label": { color: "black", fontFamily: `"Fraunces", serif` },
+            "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+            "&:hover": {
+              borderColor: "black",
+              fontFamily: `"Fraunces", serif`,
+            },
             width: "49%",
+            fontFamily: `"Fraunces", serif`,
           }}
         />
         <TextField
@@ -179,10 +205,16 @@ const Home = () => {
           variant="outlined"
           onChange={(e) => setServings(e.target.value)}
           sx={{
-            "& fieldset": { borderColor: "black" },
-            "& label": { color: "black" },
-            "& input": { color: "black" },
-            "&:hover": { borderColor: "black" },
+            "& fieldset": {
+              borderColor: "black",
+              fontFamily: `"Fraunces", serif`,
+            },
+            "& label": { color: "black", fontFamily: `"Fraunces", serif` },
+            "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+            "&:hover": {
+              borderColor: "black",
+              fontFamily: `"Fraunces", serif`,
+            },
             width: "49%",
           }}
         />
@@ -200,9 +232,14 @@ const Home = () => {
           sx={{
             width: "40%",
             height: "55px",
-            "&:hover": { backgroundColor: "black" },
+            "&:hover": { backgroundColor: "black", scale: "110%" },
+            "&:active": { scale: "90%" },
             borderRadius: "50px",
             marginBottom: "20px",
+            fontFamily: `"Fraunces", serif`,
+            fontSize: "1.2em",
+            transition: "all ease 0.2s",
+            // display:show ? "none":"flex"
           }}
           onClick={handleSearch}
         >
@@ -229,10 +266,16 @@ const Home = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            fontFamily: `"Fraunces", serif`,
           }}
         >
           <Card
-            sx={{ minWidth: 300, width: "50%", marginTop: "20px" }}
+            sx={{
+              minWidth: 300,
+              width: "50%",
+              marginTop: "20px",
+              fontFamily: `"Fraunces", serif`,
+            }}
             elevation={3}
           >
             <CardContent>
@@ -240,10 +283,11 @@ const Home = () => {
                 <Typography
                   sx={{
                     fontWeight: "900",
-                    fontSize: "2.2rem",
+                    fontSize: "2.5rem",
                     textAlign: "start",
                     width: "80%",
                     // border:"1px solid black"
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   {name}
@@ -268,7 +312,13 @@ const Home = () => {
               </Stack>
 
               <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "900",
+                    fontSize: "1.5rem",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
                   Servings
                 </Typography>
                 <Typography
@@ -278,6 +328,7 @@ const Home = () => {
                     justifyContent: "flex-end",
                     alignItems: "center",
                     width: "100%",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   {servings}
@@ -285,7 +336,13 @@ const Home = () => {
               </Stack>
 
               <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "900",
+                    fontSize: "1.5rem",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
                   Calories
                 </Typography>
                 <Typography
@@ -295,6 +352,7 @@ const Home = () => {
                     justifyContent: "flex-end",
                     alignItems: "center",
                     width: "100%",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   {calorie} calories
@@ -302,7 +360,13 @@ const Home = () => {
               </Stack>
 
               <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "900",
+                    fontSize: "1.5rem",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
                   Protien
                 </Typography>
                 <Typography
@@ -312,6 +376,7 @@ const Home = () => {
                     justifyContent: "flex-end",
                     alignItems: "center",
                     width: "100%",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   {protien} g
@@ -319,7 +384,13 @@ const Home = () => {
               </Stack>
 
               <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "900",
+                    fontSize: "1.5rem",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
                   Carbohydrates
                 </Typography>
                 <Typography
@@ -329,6 +400,7 @@ const Home = () => {
                     justifyContent: "flex-end",
                     alignItems: "center",
                     width: "100%",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   {carbo} g
@@ -336,7 +408,13 @@ const Home = () => {
               </Stack>
 
               <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "900",
+                    fontSize: "1.5rem",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
                   Fats
                 </Typography>
                 <Typography
@@ -346,6 +424,7 @@ const Home = () => {
                     justifyContent: "flex-end",
                     alignItems: "center",
                     width: "100%",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   {fats} g
@@ -353,7 +432,13 @@ const Home = () => {
               </Stack>
 
               <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography sx={{ fontWeight: "900", fontSize: "1.5rem" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "900",
+                    fontSize: "1.5rem",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
                   Fiber
                 </Typography>
                 <Typography
@@ -363,6 +448,7 @@ const Home = () => {
                     justifyContent: "flex-end",
                     alignItems: "center",
                     width: "100%",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   {fibre} g
@@ -380,9 +466,39 @@ const Home = () => {
                 direction="row"
                 spacing={4}
               >
-                <Button variant="contained">Add to Breakfast</Button>
-                <Button variant="contained">Add to Lunch</Button>
-                <Button variant="contained">Add to Dinner</Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    "&:hover": { backgroundColor: "black", scale: "110%" },
+                    "&:active": { scale: "90%" },
+                    transition: "all ease 0.2s",
+                  }}
+                >
+                  Add to Breakfast
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    "&:hover": { backgroundColor: "black", scale: "110%" },
+                    "&:active": { scale: "90%" },
+                    transition: "all ease 0.2s",
+                  }}
+                >
+                  Add to Lunch
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    "&:hover": { backgroundColor: "black", scale: "110%" },
+                    "&:active": { scale: "90%" },
+                    transition: "all ease 0.2s",
+                  }}
+                >
+                  Add to Dinner
+                </Button>
               </Stack>
             </CardActions>
           </Card>
@@ -396,7 +512,7 @@ const Home = () => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1-content"
             id="panel1-header"
-            sx={{ backgroundColor: "#92FE9D" }}
+            sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
           >
             BreakFast
           </AccordionSummary>
@@ -411,7 +527,7 @@ const Home = () => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1-content"
             id="panel1-header"
-            sx={{ backgroundColor: "#92FE9D" }}
+            sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
           >
             Lunch
           </AccordionSummary>
@@ -426,7 +542,7 @@ const Home = () => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1-content"
             id="panel1-header"
-            sx={{ backgroundColor: "#92FE9D" }}
+            sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
           >
             Dinner
           </AccordionSummary>

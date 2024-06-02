@@ -13,6 +13,8 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
+import { IoLogOutOutline } from "react-icons/io5";
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -34,25 +36,25 @@ const NavBar = () => {
   };
   const pages = [
     <Typography
-      sx={{ fontSize: "0.9rem" }}
+      sx={{ fontSize: "0.9rem",fontFamily:`"Fraunces", serif` }}
       onClick={() => navigate("/caloriecounter")}
     >
       Calorie Counter
     </Typography>,
     <Typography
-      sx={{ fontSize: "0.9rem" }}
+      sx={{ fontSize: "0.9rem",fontFamily:`"Fraunces", serif` }}
       onClick={() => navigate("/trackworkout")}
     >
       Track Workout
     </Typography>,
     <Typography
-      sx={{ fontSize: "0.9rem" }}
+      sx={{ fontSize: "0.9rem",fontFamily:`"Fraunces", serif` }}
       onClick={() => navigate("/searchworkout")}
     >
       Search workout
     </Typography>,
     <Typography
-      sx={{ fontSize: "0.9rem" }}
+      sx={{ fontSize: "0.9rem",fontFamily:`"Fraunces", serif` }}
       onClick={() => navigate("/searchrecepies")}
     >
       Search recepies
@@ -60,13 +62,13 @@ const NavBar = () => {
   ];
   const settings = [
     <Typography
-      sx={{ fontSize: "0.9rem" }}
+      sx={{ fontSize: "1.1rem",fontFamily:`"Fraunces", serif`,display:"flex",justifyContent:"center",alignItems:"center",gap:0.5 }}
       onClick={() => navigate("/profile")}
     >
-      Profile
+      <CgProfile size={20}/> Profile
     </Typography>,
-    <Typography sx={{ fontSize: "0.9rem" }} onClick={() => navigate("/")}>
-      Log out
+    <Typography sx={{ fontSize: "1.1rem",fontFamily:`"Fraunces", serif`,display:"flex",justifyContent:"center",alignItems:"center",gap:0.5 }} onClick={() => navigate("/")}>
+      <IoLogOutOutline size={25}/> Log out
     </Typography>,
   ];
   return (

@@ -125,18 +125,20 @@ const SearchWorkout = () => {
           onChange={(e) => setSearchEx(e.target.value.split(" ").join("%20"))}
           sx={{
             width: "40%",
-            "& fieldset": { borderColor: "black" },
-            "& label": { color: "black" },
-            "& input": { color: "black" },
-            "&:hover": { borderColor: "black" },
+            "& fieldset": { borderColor: "black",fontFamily:`"Fraunces", serif` },
+            "& label": { color: "black",fontFamily:`"Fraunces", serif` },
+            "& input": { color: "black",fontFamily:`"Fraunces", serif` },
+            "&:hover": { borderColor: "black",fontFamily:`"Fraunces", serif` },
           }}
         />
         <Button
           variant="contained"
           sx={{
             width: "10%",
-            "&:hover": { backgroundColor: "black", color: "#fff" },
+            "&:hover": { backgroundColor: "black" ,scale:"110%"},
+            "&:active":{scale:"90%"},
             transition: "0.2s ease-in-out",
+            fontFamily:`"Fraunces", serif`
           }}
           onClick={handleSearch}
         >
@@ -163,7 +165,7 @@ const SearchWorkout = () => {
               pageSizeOptions={[5]}
               checkboxSelection
               disableRowSelectionOnClick
-              sx={{borderColor:"black"}}
+              sx={{borderColor:"black",fontFamily:`"Fraunces", serif`}}
             />
           </Box>
         ) : (
