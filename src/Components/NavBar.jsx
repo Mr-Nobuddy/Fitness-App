@@ -15,6 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { IoLogOutOutline } from "react-icons/io5";
+import axios from "axios";
 
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -34,6 +35,18 @@ const NavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const handleLogOut = () => {
+    axios.get("/logout")
+    .then((res) => {
+      // console.log("logged out succesfully");
+      // navigate("/");
+      // res.redirect('/');
+      document.location.replace("/");
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
   const pages = [
     <Typography
       sx={{ fontSize: "0.9rem",fontFamily:`"Fraunces", serif` }}
@@ -67,7 +80,7 @@ const NavBar = () => {
     >
       <CgProfile size={20}/> Profile
     </Typography>,
-    <Typography sx={{ fontSize: "1.1rem",fontFamily:`"Fraunces", serif`,display:"flex",justifyContent:"center",alignItems:"center",gap:0.5 }} onClick={() => navigate("/")}>
+    <Typography sx={{ fontSize: "1.1rem",fontFamily:`"Fraunces", serif`,display:"flex",justifyContent:"center",alignItems:"center",gap:0.5 }} onClick={handleLogOut}>
       <IoLogOutOutline size={25}/> Log out
     </Typography>,
   ];

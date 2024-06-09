@@ -36,9 +36,67 @@ const Home = () => {
   const [lunch, setLunch] = React.useState([]);
   const [dinner, setDinner] = React.useState([]);
 
+  const [dailyCalorie,setDailyCalorie] = React.useState(0);
+  const [dailyProtien,setDailyProtien] = React.useState(0);
+  const [dailyCarbohydrates,setDailyCarbohydrates] = React.useState(0);
+  const [dailyFats,setDailyFats] = React.useState(0);
+  const [dailyFibre,setDailyFibre] = React.useState(0);
+
+  const [maxProtien,setMaxProtien] = React.useState(0);
+  const [maxCarb,setMaxCarb] = React.useState(0);
+  const [maxFat,setMaxFat] = React.useState(0);
+  const [maxFiber,setMaxFiber] = React.useState(0);
+  
   const [cal, setCal] = React.useState(0);
-  const maxcalorie = 1600;
-  const value = `${cal}/${maxcalorie}`;
+  const [change,setChange] = React.useState(false);
+  // const maxcalorie = 1600;
+  const value = `${cal}/${dailyCalorie}`;
+
+  const handleAddToBreakFast = () => {
+    axios.post('/addbreakfast',{})
+    .then((response) => {
+
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const handleAddToLunch = () => {
+    axios.post('/addlunch',{})
+    .then((response) => {
+
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const handleAddToDinner = () => {
+    axios.post('/addDinner',{})
+    .then((response) => {
+
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  React.useEffect(() => {
+    // setChange(!change);
+    axios.get("/getbodydata")
+    .then((response) => {
+      // console.log(response.data[0].maintainance_cal)
+      setDailyCalorie(Math.round(response.data[0].maintainance_cal));
+      setMaxProtien(Math.round(response.data[0].weight*1.2));
+      setMaxCarb(Math.round((response.data[0].maintainance_cal*0.70)/4));
+      setMaxFat(Math.round((response.data[0].maintainance_cal*0.30)/9));
+      setMaxFiber(30)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  },[])
 
   const handleSearch = async () => {
     try {
@@ -97,18 +155,19 @@ const Home = () => {
             height={250}
             value={value}
             valueMin={0}
-            valueMax={maxcalorie}
+            valueMax={dailyCalorie}
           />
         </Box>
         <Stack width="60%" direction="column" sx={{ paddingRight: "10%" }}>
           <Typography
-            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1rem" }}
+            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1rem" ,display:"flex",alignItems:"center",justifyContent:"space-between"}}
           >
             Protiens
+            <span>{dailyProtien}g / {maxProtien}g</span>
           </Typography>
           <Slider
             disabled
-            defaultValue={70}
+            defaultValue={dailyProtien}
             aria-label="Disabled slider"
             max={100}
             min={0}
@@ -116,26 +175,28 @@ const Home = () => {
           />
 
           <Typography
-            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" }}
+            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" ,display:"flex",alignItems:"center",justifyContent:"space-between"}}
           >
             Carbohydrates
+            <span>{dailyCarbohydrates}g / {maxCarb}g</span>
           </Typography>
           <Slider
             disabled
-            defaultValue={10}
+            defaultValue={dailyCarbohydrates}
             aria-label="Disabled slider"
             max={100}
             min={0}
           />
 
           <Typography
-            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" }}
+            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em",display:"flex",alignItems:"center",justifyContent:"space-between" }}
           >
             Fats
+            <span>{dailyFats}g / {maxFat}g</span>
           </Typography>
           <Slider
             disabled
-            defaultValue={20}
+            defaultValue={dailyFats}
             aria-label="Disabled slider"
             max={100}
             min={0}
@@ -143,16 +204,17 @@ const Home = () => {
           />
 
           <Typography
-            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" }}
+            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" ,display:"flex",alignItems:"center",justifyContent:"space-between"}}
           >
             Fiber
+            <span>{dailyFibre}g / {maxFiber}g</span>
           </Typography>
           <Slider
             disabled
-            defaultValue={40}
+            defaultValue={dailyFibre}
             aria-label="Disabled slider"
-            max={100}
-            min={0}
+            max={30}
+            // min={0}
             color="success"
           />
         </Stack>

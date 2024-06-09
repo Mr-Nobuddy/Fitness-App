@@ -12,6 +12,7 @@ import {
   InputAdornment,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
@@ -68,7 +69,7 @@ const Profile = ({ snackbar }) => {
         currentht: currentHeight,
         goalwt: goalWeight,
         bmi: Math.round(currentWT / (currentHeight * currentHeight)),
-        maintainance_cal : Gender === "Male" ? 10*currentWT + 6.25*currentHeight*100 - 5*age+5 : 10*currentWT + 6.25*currentHeight*100 - 5*age-161,
+        maintainance_cal : Gender === "Male" ? (10*currentWT) + (6.25*currentHeight*100) - (5*age+5) : (10*currentWT) + (6.25*currentHeight*100) - (5*age-161),
         gender : Gender,
         age : age
       })
@@ -179,6 +180,7 @@ const Profile = ({ snackbar }) => {
               }}
               value={email}
             />
+            <Typography sx={{padding:"20px",display:"flex",justifyContent:"center",alignItems:"center",fontFamily: `"Fraunces", serif`,fontSize:"1.5em",fontWeight:"700"}}>Enter your details</Typography>
             <TextField
               variant="outlined"
               label="What is your Current Weight in Kgs"
@@ -290,6 +292,7 @@ const Profile = ({ snackbar }) => {
               value={age}
               onChange={(e) => setAge(e.target.value)}
             />
+            <Typography sx={{padding:"20px",display:"flex",justifyContent:"center",alignItems:"center",fontFamily: `"Fraunces", serif`,fontSize:"1.5em",fontWeight:"700"}}>Calculated based on your input</Typography>
             <TextField
               variant="outlined"
               label="Your Current BMI"

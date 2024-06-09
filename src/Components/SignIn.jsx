@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
 import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -48,6 +49,15 @@ export default function SignIn() {
   //     password: data.get("password"),
   //   });
   // };
+  React.useEffect(() => {
+    axios.get('/checkcookie')
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  },[]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

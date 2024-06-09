@@ -40,6 +40,7 @@ function App() {
           <Route path="/profile" element={<Profile snackbar={setSnackbar}/>}/>
         </Routes>
       </Router>
+
       {!!snackbar && (
         <Snackbar open={true} autoHideDuration={5000} onClose={handleClose}>
           <Alert
