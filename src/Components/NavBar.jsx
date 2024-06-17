@@ -20,6 +20,7 @@ import axios from "axios";
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [image,setImage] = React.useState("");
   const navigate = useNavigate();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -47,6 +48,15 @@ const NavBar = () => {
       console.log(err)
     })
   }
+  React.useEffect(() => {
+    axios.get('/getimage')
+    .then((response) => {
+      setImage(response.data[0].image)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  })
   const pages = [
     <Typography
       sx={{ fontSize: "0.9rem",fontFamily:`"Fraunces", serif` }}
@@ -178,7 +188,7 @@ const NavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Remy Sharp" src={image} />
                 </IconButton>
               </Tooltip>
               <Menu

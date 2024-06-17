@@ -55,8 +55,10 @@ const Profile = ({ snackbar }) => {
 
   const handleClickShowOldPassword = () =>
     setShowOldPassword((showOldPassword) => !showOldPassword);
+
   const handleClickShowNewPassword = () =>
     setShowNewPassword((showNewPassword) => !showNewPassword);
+  
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((showConfirmPassword) => !showConfirmPassword);
 
@@ -104,6 +106,7 @@ const Profile = ({ snackbar }) => {
   }, [showBMIGauge]);
 
   const gender = ["Male", "Female", "Other"];
+  // const activity = [{}]
   return (
     <Box
       sx={{

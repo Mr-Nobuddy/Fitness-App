@@ -17,9 +17,9 @@ import CardContent from "@mui/material/CardContent";
 import NavBar from "./NavBar";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import CircularProgress from "@mui/material/CircularProgress";
-import { grey } from '@mui/material/colors';
+import { grey } from "@mui/material/colors";
 
-const Home = () => {
+const Home = ({ snackbar }) => {
   const [searchFood, setSearchFood] = React.useState("");
   const [servings, setServings] = React.useState(1);
 
@@ -36,67 +36,85 @@ const Home = () => {
   const [lunch, setLunch] = React.useState([]);
   const [dinner, setDinner] = React.useState([]);
 
-  const [dailyCalorie,setDailyCalorie] = React.useState(0);
-  const [dailyProtien,setDailyProtien] = React.useState(0);
-  const [dailyCarbohydrates,setDailyCarbohydrates] = React.useState(0);
-  const [dailyFats,setDailyFats] = React.useState(0);
-  const [dailyFibre,setDailyFibre] = React.useState(0);
+  const [dailyCalorie, setDailyCalorie] = React.useState(0);
+  const [dailyProtien, setDailyProtien] = React.useState(0);
+  const [dailyCarbohydrates, setDailyCarbohydrates] = React.useState(0);
+  const [dailyFats, setDailyFats] = React.useState(0);
+  const [dailyFibre, setDailyFibre] = React.useState(0);
 
-  const [maxProtien,setMaxProtien] = React.useState(0);
-  const [maxCarb,setMaxCarb] = React.useState(0);
-  const [maxFat,setMaxFat] = React.useState(0);
-  const [maxFiber,setMaxFiber] = React.useState(0);
-  
+  const [maxProtien, setMaxProtien] = React.useState(0);
+  const [maxCarb, setMaxCarb] = React.useState(0);
+  const [maxFat, setMaxFat] = React.useState(0);
+  const [maxFiber, setMaxFiber] = React.useState(0);
+
   const [cal, setCal] = React.useState(0);
-  const [change,setChange] = React.useState(false);
+  var kcal = 0;
+  const [change, setChange] = React.useState(false);
   // const maxcalorie = 1600;
-  const value = `${cal}/${dailyCalorie}`;
+  const value = `${cal}/${dailyCalorie} kcal`;
 
   const handleAddToBreakFast = () => {
-    axios.post('/addbreakfast',{})
-    .then((response) => {
-
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }
+    setChange(!change)
+    axios
+      .post("/addbreakfast", {
+        meal: "breakfast",
+        meal_name: name,
+        meal_servings: servings,
+        meal_protien: protien,
+        meal_calories: calorie,
+        meal_carbohydrates: carbo,
+        meal_fats: fats,
+        meal_fiber: fibre,
+      })
+      .then((_) => {
+        snackbar({ message: "Meal added successfully" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleAddToLunch = () => {
-    axios.post('/addlunch',{})
-    .then((response) => {
-
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }
+    setChange(!change)
+    axios
+      .post("/addlunch", {
+        meal: "lunch",
+        meal_name: name,
+        meal_servings: servings,
+        meal_protien: protien,
+        meal_calories: calorie,
+        meal_carbohydrates: carbo,
+        meal_fats: fats,
+        meal_fiber: fibre,
+      })
+      .then((_) => {
+        snackbar({ message: "Meal added successfully" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleAddToDinner = () => {
-    axios.post('/addDinner',{})
-    .then((response) => {
-
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }
-
-  React.useEffect(() => {
-    // setChange(!change);
-    axios.get("/getbodydata")
-    .then((response) => {
-      // console.log(response.data[0].maintainance_cal)
-      setDailyCalorie(Math.round(response.data[0].maintainance_cal));
-      setMaxProtien(Math.round(response.data[0].weight*1.2));
-      setMaxCarb(Math.round((response.data[0].maintainance_cal*0.70)/4));
-      setMaxFat(Math.round((response.data[0].maintainance_cal*0.30)/9));
-      setMaxFiber(30)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  },[])
+    setChange(!change)
+    axios
+      .post("/addDinner", {
+        meal: "dinner",
+        meal_name: name,
+        meal_servings: servings,
+        meal_protien: protien,
+        meal_calories: calorie,
+        meal_carbohydrates: carbo,
+        meal_fats: fats,
+        meal_fiber: fibre,
+      })
+      .then((_) => {
+        snackbar({ message: "Meal added successfully" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleSearch = async () => {
     try {
@@ -117,18 +135,83 @@ const Home = () => {
       );
       // console.log(response.data.foods[0].food_name);
       setShowLoader(false);
+      console.log(response.data);
       setName(response.data.foods[0].food_name);
-      setCalorie(response.data.foods[0].nf_calories * servings);
-      setProtien(response.data.foods[0].nf_protein * servings);
-      setCarbo(response.data.foods[0].nf_total_carbohydrate * servings);
-      setFats(response.data.foods[0].nf_total_fat * servings);
-      setFibre(response.data.foods[0].nf_dietary_fiber * servings);
+      setCalorie(Math.round(response.data.foods[0].nf_calories * servings));
+      setProtien(Math.round(response.data.foods[0].nf_protein * servings));
+      setCarbo(
+        Math.round(response.data.foods[0].nf_total_carbohydrate * servings)
+      );
+      setFats(Math.round(response.data.foods[0].nf_total_fat * servings));
+      setFibre(Math.round(response.data.foods[0].nf_dietary_fiber * servings));
       setShow(true);
       // Handle the response data here
     } catch (error) {
       console.error(error);
     }
   };
+
+  const handleCaloriesBK = (bk) => {
+    for(var i = 0; i<bk.length; i++){
+      setCal(cal + parseInt(bk[i].meal_calories))
+    }
+  }
+
+  //for getting body data
+  React.useEffect(() => {
+    axios
+      .get("/getbodydata")
+      .then((response) => {
+        // console.log(response.data[0].maintainance_cal)
+        setDailyCalorie(Math.round(response.data[0].maintainance_cal));
+        setMaxProtien(Math.round(response.data[0].weight * 1.2));
+        setMaxCarb(Math.round((response.data[0].maintainance_cal * 0.7) / 4));
+        setMaxFat(Math.round((response.data[0].maintainance_cal * 0.3) / 9));
+        setMaxFiber(30);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  //for breakfast
+  React.useEffect(() => {
+    axios
+      .get("/getbreakfast")
+      .then((response) => {
+        // console.log(response.data)
+        setBreakFast(response.data);
+        handleCaloriesBK(breakfast)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  //for dinner
+  React.useEffect(() => {
+    axios
+      .get("/getdinner")
+      .then((response) => {
+        // console.log(response.data)
+        setDinner(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [change]);
+
+  // for lunch
+  React.useEffect(() => {
+    axios
+      .get("/getlunch")
+      .then((response) => {
+        setLunch(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [change]);
 
   return (
     <Box
@@ -160,10 +243,18 @@ const Home = () => {
         </Box>
         <Stack width="60%" direction="column" sx={{ paddingRight: "10%" }}>
           <Typography
-            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1rem" ,display:"flex",alignItems:"center",justifyContent:"space-between"}}
+            sx={{
+              fontFamily: `"Fraunces", serif`,
+              fontSize: "1.1rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
             Protiens
-            <span>{dailyProtien}g / {maxProtien}g</span>
+            <span>
+              {dailyProtien}g / {maxProtien}g
+            </span>
           </Typography>
           <Slider
             disabled
@@ -175,10 +266,18 @@ const Home = () => {
           />
 
           <Typography
-            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" ,display:"flex",alignItems:"center",justifyContent:"space-between"}}
+            sx={{
+              fontFamily: `"Fraunces", serif`,
+              fontSize: "1.1em",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
             Carbohydrates
-            <span>{dailyCarbohydrates}g / {maxCarb}g</span>
+            <span>
+              {dailyCarbohydrates}g / {maxCarb}g
+            </span>
           </Typography>
           <Slider
             disabled
@@ -189,10 +288,18 @@ const Home = () => {
           />
 
           <Typography
-            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em",display:"flex",alignItems:"center",justifyContent:"space-between" }}
+            sx={{
+              fontFamily: `"Fraunces", serif`,
+              fontSize: "1.1em",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
             Fats
-            <span>{dailyFats}g / {maxFat}g</span>
+            <span>
+              {dailyFats}g / {maxFat}g
+            </span>
           </Typography>
           <Slider
             disabled
@@ -204,10 +311,18 @@ const Home = () => {
           />
 
           <Typography
-            sx={{ fontFamily: `"Fraunces", serif`, fontSize: "1.1em" ,display:"flex",alignItems:"center",justifyContent:"space-between"}}
+            sx={{
+              fontFamily: `"Fraunces", serif`,
+              fontSize: "1.1em",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
             Fiber
-            <span>{dailyFibre}g / {maxFiber}g</span>
+            <span>
+              {dailyFibre}g / {maxFiber}g
+            </span>
           </Typography>
           <Slider
             disabled
@@ -536,6 +651,7 @@ const Home = () => {
                     "&:active": { scale: "90%" },
                     transition: "all ease 0.2s",
                   }}
+                  onClick={handleAddToBreakFast}
                 >
                   Add to Breakfast
                 </Button>
@@ -547,6 +663,7 @@ const Home = () => {
                     "&:active": { scale: "90%" },
                     transition: "all ease 0.2s",
                   }}
+                  onClick={handleAddToLunch}
                 >
                   Add to Lunch
                 </Button>
@@ -558,6 +675,7 @@ const Home = () => {
                     "&:active": { scale: "90%" },
                     transition: "all ease 0.2s",
                   }}
+                  onClick={handleAddToDinner}
                 >
                   Add to Dinner
                 </Button>
@@ -579,8 +697,198 @@ const Home = () => {
             BreakFast
           </AccordionSummary>
           <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            <Box sx={{ width: "100%" }}>
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  // justifyContent: "space-evenly",
+                  fontFamily: `"Fraunces", serif`,
+                }}
+              >
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Meal Name
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Servings
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Calories
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Protien
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Carbohydrates
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Fats
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Fiber
+                </span>
+              </Typography>
+            </Box>
+            {breakfast.length !== 0 ? (
+              breakfast.map((item) => (
+                <Box sx={{ width: "100%" }}>
+                  <Typography
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      // justifyContent: "space-evenly",
+                      fontFamily: `"Fraunces", serif`,
+                      // border:"1px solid black"
+                    }}
+                  >
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_name}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_servings}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_calories}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_protien}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_carbohydrates}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_fats}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_fiber}
+                    </span>
+                  </Typography>
+                </Box>
+              ))
+            ) : (
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                No Meals Found
+              </Typography>
+            )}
           </AccordionDetails>
         </Accordion>
 
@@ -594,8 +902,199 @@ const Home = () => {
             Lunch
           </AccordionSummary>
           <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            <Box sx={{ width: "100%" }}>
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  // justifyContent: "space-evenly",
+                  fontFamily: `"Fraunces", serif`,
+                }}
+              >
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Meal Name
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Servings
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Calories
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Protien
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Carbohydrates
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Fats
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Fiber
+                </span>
+              </Typography>
+            </Box>
+            {lunch.length !== 0 ? (
+              lunch.map((item) => (
+                <Box sx={{ width: "100%" }}>
+                  <Typography
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      // justifyContent: "space-evenly",
+                      fontFamily: `"Fraunces", serif`,
+                      // border:"1px solid black"
+                    }}
+                  >
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_name}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_servings}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_calories}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_protien}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_carbohydrates}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_fats}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_fiber}
+                    </span>
+                  </Typography>
+                </Box>
+              ))
+            ) : (
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  marginTop: "20px",
+                }}
+              >
+                No Meals Found
+              </Typography>
+            )}
           </AccordionDetails>
         </Accordion>
 
@@ -609,8 +1108,199 @@ const Home = () => {
             Dinner
           </AccordionSummary>
           <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            <Box sx={{ width: "100%" }}>
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  // justifyContent: "space-evenly",
+                  fontFamily: `"Fraunces", serif`,
+                }}
+              >
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Meal Name
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Servings
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Calories
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Protien
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Carbohydrates
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Fats
+                </span>
+                <span
+                  style={{
+                    border: "1px solid black",
+                    width: "14%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Fiber
+                </span>
+              </Typography>
+            </Box>
+            {dinner.length !== 0 ? (
+              dinner.map((item) => (
+                <Box sx={{ width: "100%" }}>
+                  <Typography
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      // justifyContent: "space-evenly",
+                      fontFamily: `"Fraunces", serif`,
+                      // border:"1px solid black"
+                    }}
+                  >
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_name}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_servings}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_calories}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_protien}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_carbohydrates}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_fats}
+                    </span>
+                    <span
+                      style={{
+                        border: "1px solid black",
+                        width: "14%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.meal_fiber}
+                    </span>
+                  </Typography>
+                </Box>
+              ))
+            ) : (
+              <Typography
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  marginTop: "20px",
+                }}
+              >
+                No Meals Found
+              </Typography>
+            )}
           </AccordionDetails>
         </Accordion>
       </Box>
