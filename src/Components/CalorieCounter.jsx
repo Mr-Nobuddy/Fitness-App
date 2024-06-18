@@ -49,12 +49,16 @@ const Home = ({ snackbar }) => {
 
   const [cal, setCal] = React.useState(0);
   var kcal = 0;
+  var prot = 0;
+  var carb = 0;
+  var fatty = 0;
+  var fibrous = 0;
   const [change, setChange] = React.useState(false);
   // const maxcalorie = 1600;
-  const value = `${cal}/${dailyCalorie} kcal`;
+  const value = cal;
 
   const handleAddToBreakFast = () => {
-    setChange(!change)
+    setChange(!change);
     axios
       .post("/addbreakfast", {
         meal: "breakfast",
@@ -75,7 +79,7 @@ const Home = ({ snackbar }) => {
   };
 
   const handleAddToLunch = () => {
-    setChange(!change)
+    setChange(!change);
     axios
       .post("/addlunch", {
         meal: "lunch",
@@ -96,7 +100,7 @@ const Home = ({ snackbar }) => {
   };
 
   const handleAddToDinner = () => {
-    setChange(!change)
+    setChange(!change);
     axios
       .post("/addDinner", {
         meal: "dinner",
@@ -152,8 +156,38 @@ const Home = ({ snackbar }) => {
   };
 
   const handleCaloriesBK = (bk) => {
-    for(var i = 0; i<bk.length; i++){
-      setCal(cal + parseInt(bk[i].meal_calories))
+    for(var i=0; i<bk.length; i++){
+      // console.log(bk[i].meal_calories)
+      kcal = kcal+parseInt(bk[i].meal_calories)
+      setCal(kcal);
+    }
+  };
+
+  const handleProtienBk = (bk) => {
+    for(var i=0; i<bk.length; i++){
+      prot = prot + parseInt(bk[i].meal_protien)
+      setDailyProtien(prot);
+    }
+  }
+
+  const handleCarbBk = (bk) => {
+    for(var i=0; i<bk.length; i++){
+      carb = carb + parseInt(bk[i].meal_carbohydrates)
+      setDailyCarbohydrates(carb);
+    }
+  }
+
+  const handleFatBk = (bk) => {
+    for(var i=0; i<bk.length; i++){
+      fatty = fatty + parseInt(bk[i].meal_fats)
+      setDailyFats(fatty);
+    }
+  }
+
+  const handleFiber = (bk) => {
+    for(var i=0; i<bk.length; i++){
+      fibrous = fibrous + parseInt(bk[i].meal_fiber)
+      setDailyFibre(fibrous)
     }
   }
 
@@ -181,12 +215,17 @@ const Home = ({ snackbar }) => {
       .then((response) => {
         // console.log(response.data)
         setBreakFast(response.data);
-        handleCaloriesBK(breakfast)
+        var bk = response.data
+        handleCaloriesBK(bk);
+        handleProtienBk(bk);
+        handleCarbBk(bk);
+        handleFatBk(bk);
+        handleFiber(bk);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [change]);
 
   //for dinner
   React.useEffect(() => {
@@ -195,6 +234,12 @@ const Home = ({ snackbar }) => {
       .then((response) => {
         // console.log(response.data)
         setDinner(response.data);
+        var bk = response.data
+        handleCaloriesBK(bk);
+        handleProtienBk(bk);
+        handleCarbBk(bk);
+        handleFatBk(bk);
+        handleFiber(bk);
       })
       .catch((err) => {
         console.log(err);
@@ -207,6 +252,12 @@ const Home = ({ snackbar }) => {
       .get("/getlunch")
       .then((response) => {
         setLunch(response.data);
+        var bk = response.data
+        handleCaloriesBK(bk);
+        handleProtienBk(bk);
+        handleCarbBk(bk);
+        handleFatBk(bk);
+        handleFiber(bk);
       })
       .catch((err) => {
         console.log(err);
@@ -258,9 +309,9 @@ const Home = ({ snackbar }) => {
           </Typography>
           <Slider
             disabled
-            defaultValue={dailyProtien}
+            defaultValue={prot}
             aria-label="Disabled slider"
-            max={100}
+            max={maxProtien}
             min={0}
             color={grey[900]}
           />
@@ -283,7 +334,7 @@ const Home = ({ snackbar }) => {
             disabled
             defaultValue={dailyCarbohydrates}
             aria-label="Disabled slider"
-            max={100}
+            max={maxCarb}
             min={0}
           />
 
@@ -884,6 +935,7 @@ const Home = ({ snackbar }) => {
                   alignItems: "center",
                   justifyContent: "center",
                   width: "100%",
+                  marginTop: "20px",
                 }}
               >
                 No Meals Found
