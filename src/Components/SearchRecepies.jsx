@@ -47,6 +47,18 @@ const SearchRecepies = () => {
   return (
     <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "200vh" }}>
       <NavBar />
+      <Typography
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: `"Fraunces", serif`,
+          fontWeight:"700",
+          fontSize: "40px",
+        }}
+      >
+        Search for the healthy Recepies here
+      </Typography>
       <Box
         sx={{
           display: "flex",

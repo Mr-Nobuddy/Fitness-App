@@ -48,6 +48,18 @@ const TrackWorkout = () => {
   return (
     <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "96.2vh" }}>
       <NavBar />
+      <Typography
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: `"Fraunces", serif`,
+          fontWeight:"700",
+          fontSize: "40px",
+        }}
+      >
+        Track your workouts here
+      </Typography>
       <Box
         sx={{
           display: "flex",
@@ -80,8 +92,8 @@ const TrackWorkout = () => {
           variant="contained"
           sx={{
             width: "10%",
-            "&:hover": { backgroundColor: "black" ,scale:"110%"},
-            "&:active":{scale:"90%"},
+            "&:hover": { backgroundColor: "black", scale: "110%" },
+            "&:active": { scale: "90%" },
             transition: "0.2s ease-in-out",
             fontFamily: `"Fraunces", serif`,
           }}

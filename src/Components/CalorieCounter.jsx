@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import { Gauge } from "@mui/x-charts/Gauge";
+import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import Accordion from "@mui/material/Accordion";
@@ -155,41 +155,20 @@ const Home = ({ snackbar }) => {
     }
   };
 
-  const handleCaloriesBK = (bk) => {
-    for(var i=0; i<bk.length; i++){
-      // console.log(bk[i].meal_calories)
-      kcal = kcal+parseInt(bk[i].meal_calories)
+  const handleMacro = (bk) => {
+    for (var i = 0; i < bk.length; i++) {
+      kcal = kcal + parseInt(bk[i].meal_calories);
       setCal(kcal);
+      prot = prot + parseInt(bk[i].meal_protien);
+      setDailyProtien(prot);
+      carb = carb + parseInt(bk[i].meal_carbohydrates);
+      setDailyCarbohydrates(carb);
+      fatty = fatty + parseInt(bk[i].meal_fats);
+      setDailyFats(fatty);
+      fibrous = fibrous + parseInt(bk[i].meal_fiber);
+      setDailyFibre(fibrous);
     }
   };
-
-  const handleProtienBk = (bk) => {
-    for(var i=0; i<bk.length; i++){
-      prot = prot + parseInt(bk[i].meal_protien)
-      setDailyProtien(prot);
-    }
-  }
-
-  const handleCarbBk = (bk) => {
-    for(var i=0; i<bk.length; i++){
-      carb = carb + parseInt(bk[i].meal_carbohydrates)
-      setDailyCarbohydrates(carb);
-    }
-  }
-
-  const handleFatBk = (bk) => {
-    for(var i=0; i<bk.length; i++){
-      fatty = fatty + parseInt(bk[i].meal_fats)
-      setDailyFats(fatty);
-    }
-  }
-
-  const handleFiber = (bk) => {
-    for(var i=0; i<bk.length; i++){
-      fibrous = fibrous + parseInt(bk[i].meal_fiber)
-      setDailyFibre(fibrous)
-    }
-  }
 
   //for getting body data
   React.useEffect(() => {
@@ -215,12 +194,8 @@ const Home = ({ snackbar }) => {
       .then((response) => {
         // console.log(response.data)
         setBreakFast(response.data);
-        var bk = response.data
-        handleCaloriesBK(bk);
-        handleProtienBk(bk);
-        handleCarbBk(bk);
-        handleFatBk(bk);
-        handleFiber(bk);
+        var bk = response.data;
+        handleMacro(bk);
       })
       .catch((err) => {
         console.log(err);
@@ -234,12 +209,8 @@ const Home = ({ snackbar }) => {
       .then((response) => {
         // console.log(response.data)
         setDinner(response.data);
-        var bk = response.data
-        handleCaloriesBK(bk);
-        handleProtienBk(bk);
-        handleCarbBk(bk);
-        handleFatBk(bk);
-        handleFiber(bk);
+        var bk = response.data;
+        handleMacro(bk);
       })
       .catch((err) => {
         console.log(err);
@@ -252,12 +223,8 @@ const Home = ({ snackbar }) => {
       .get("/getlunch")
       .then((response) => {
         setLunch(response.data);
-        var bk = response.data
-        handleCaloriesBK(bk);
-        handleProtienBk(bk);
-        handleCarbBk(bk);
-        handleFatBk(bk);
-        handleFiber(bk);
+        var bk = response.data;
+        handleMacro(bk);
       })
       .catch((err) => {
         console.log(err);
@@ -275,114 +242,213 @@ const Home = ({ snackbar }) => {
       }}
     >
       <NavBar />
-      <Stack direction="row">
-        <Box
-          width="40%"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Gauge
-            width={250}
-            height={250}
-            value={value}
-            valueMin={0}
-            valueMax={dailyCalorie}
-          />
-        </Box>
-        <Stack width="60%" direction="column" sx={{ paddingRight: "10%" }}>
+      <Stack direction="row" sx={{ marginBottom: "30px" }}>
+        <Box width="40%">
+          <Typography
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontFamily: `"Fraunces", serif`,
+            }}
+          >
+            <Gauge
+              width={250}
+              height={250}
+              value={value}
+              valueMin={0}
+              valueMax={dailyCalorie}
+              cornerRadius="50%"
+              sx={(theme) => ({
+                [`& .${gaugeClasses.valueText}`]: {
+                  fontSize: 40,
+                },
+              })}
+            />
+          </Typography>
+
           <Typography
             sx={{
               fontFamily: `"Fraunces", serif`,
               fontSize: "1.1rem",
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: "center",
+              gap: 1,
             }}
           >
-            Protiens
+            Calories:
             <span>
-              {dailyProtien}g / {maxProtien}g
+              {cal} / {dailyCalorie} kcal
             </span>
           </Typography>
-          <Slider
-            disabled
-            defaultValue={prot}
-            aria-label="Disabled slider"
-            max={maxProtien}
-            min={0}
-            color={grey[900]}
-          />
+        </Box>
+        <Stack
+          width="60%"
+          direction="column"
+          sx={{ paddingRight: "10%" }}
+          spacing={3}
+        >
+          <Stack direction="row">
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontFamily: `"Fraunces", serif`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Gauge
+                  width={120}
+                  height={120}
+                  value={dailyProtien}
+                  valueMax={maxProtien}
+                  cornerRadius="50%"
+                  sx={(theme) => ({
+                    [`& .${gaugeClasses.valueText}`]: {
+                      fontSize: 25,
+                    },
+                  })}
+                />
+              </Typography>
 
-          <Typography
-            sx={{
-              fontFamily: `"Fraunces", serif`,
-              fontSize: "1.1em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            Carbohydrates
-            <span>
-              {dailyCarbohydrates}g / {maxCarb}g
-            </span>
-          </Typography>
-          <Slider
-            disabled
-            defaultValue={dailyCarbohydrates}
-            aria-label="Disabled slider"
-            max={maxCarb}
-            min={0}
-          />
+              <Typography
+                sx={{
+                  fontFamily: `"Fraunces", serif`,
+                  fontSize: "1.1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 1,
+                }}
+              >
+                Protiens:
+                <span>
+                  {dailyProtien}g / {maxProtien}g
+                </span>
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontFamily: `"Fraunces", serif`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Gauge
+                  width={120}
+                  height={120}
+                  value={dailyCarbohydrates}
+                  valueMax={maxCarb}
+                  cornerRadius="50%"
+                  sx={(theme) => ({
+                    [`& .${gaugeClasses.valueText}`]: {
+                      fontSize: 25,
+                    },
+                  })}
+                />
+              </Typography>
 
-          <Typography
-            sx={{
-              fontFamily: `"Fraunces", serif`,
-              fontSize: "1.1em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            Fats
-            <span>
-              {dailyFats}g / {maxFat}g
-            </span>
-          </Typography>
-          <Slider
-            disabled
-            defaultValue={dailyFats}
-            aria-label="Disabled slider"
-            max={100}
-            min={0}
-            color="success"
-          />
+              <Typography
+                sx={{
+                  fontFamily: `"Fraunces", serif`,
+                  fontSize: "1.1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 1,
+                }}
+              >
+                Carbohydrates:
+                <span>
+                  {dailyCarbohydrates}g / {maxCarb}g
+                </span>
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack direction="row">
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontFamily: `"Fraunces", serif`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Gauge
+                  width={120}
+                  height={120}
+                  value={dailyFats}
+                  valueMax={maxFat}
+                  cornerRadius="50%"
+                  sx={(theme) => ({
+                    [`& .${gaugeClasses.valueText}`]: {
+                      fontSize: 25,
+                    },
+                  })}
+                />
+              </Typography>
 
-          <Typography
-            sx={{
-              fontFamily: `"Fraunces", serif`,
-              fontSize: "1.1em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            Fiber
-            <span>
-              {dailyFibre}g / {maxFiber}g
-            </span>
-          </Typography>
-          <Slider
-            disabled
-            defaultValue={dailyFibre}
-            aria-label="Disabled slider"
-            max={30}
-            // min={0}
-            color="success"
-          />
+              <Typography
+                sx={{
+                  fontFamily: `"Fraunces", serif`,
+                  fontSize: "1.1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 1,
+                }}
+              >
+                Fats:
+                <span>
+                  {dailyFats}g / {maxFat}g
+                </span>
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontFamily: `"Fraunces", serif`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Gauge
+                  width={120}
+                  height={120}
+                  value={dailyFibre}
+                  valueMax={maxFiber}
+                  cornerRadius="50%"
+                  sx={(theme) => ({
+                    [`& .${gaugeClasses.valueText}`]: {
+                      fontSize: 25,
+                    },
+                  })}
+                />
+              </Typography>
+
+              <Typography
+                sx={{
+                  fontFamily: `"Fraunces", serif`,
+                  fontSize: "1.1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 1,
+                }}
+              >
+                Fiber:
+                <span>
+                  {dailyFibre}g / {maxFiber}g
+                </span>
+              </Typography>
+            </Box>
+          </Stack>
         </Stack>
       </Stack>
       <Typography

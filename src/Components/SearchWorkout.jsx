@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Stack, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import NavBar from "./NavBar";
 import axios from "axios";
@@ -109,6 +109,18 @@ const SearchWorkout = () => {
   return (
     <Box sx={{ backgroundColor: "yellow", padding: "10px", height: "200vh" }}>
       <NavBar />
+      <Typography
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: `"Fraunces", serif`,
+          fontWeight:"700",
+          fontSize: "40px",
+        }}
+      >
+        Search for Workouts here
+      </Typography>
       <Box
         sx={{
           display: "flex",
