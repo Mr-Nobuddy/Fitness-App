@@ -35,9 +35,9 @@ const Profile = ({ snackbar }) => {
   const [goalWeight, setGoalWeight] = useState("");
   const [bmi, setBMI] = useState("");
   const [maintainCal, setMaintainCal] = useState("");
-  const [Gender,setGender] = useState("");
+  const [Gender, setGender] = useState("");
   const [profileImg, setProfileImg] = useState("");
-  const [age,setAge] = useState("");
+  const [age, setAge] = useState("");
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -58,7 +58,7 @@ const Profile = ({ snackbar }) => {
 
   const handleClickShowNewPassword = () =>
     setShowNewPassword((showNewPassword) => !showNewPassword);
-  
+
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((showConfirmPassword) => !showConfirmPassword);
 
@@ -71,9 +71,12 @@ const Profile = ({ snackbar }) => {
         currentht: currentHeight,
         goalwt: goalWeight,
         bmi: Math.round(currentWT / (currentHeight * currentHeight)),
-        maintainance_cal : Gender === "Male" ? (10*currentWT) + (6.25*currentHeight*100) - (5*age+5) : (10*currentWT) + (6.25*currentHeight*100) - (5*age-161),
-        gender : Gender,
-        age : age
+        maintainance_cal:
+          Gender === "Male"
+            ? 10 * currentWT + 6.25 * currentHeight * 100 - (5 * age + 5)
+            : 10 * currentWT + 6.25 * currentHeight * 100 - (5 * age - 161),
+        gender: Gender,
+        age: age,
       })
       .then((_) => {
         snackbar({ message: "Profile Updated Successfully" });
@@ -95,9 +98,9 @@ const Profile = ({ snackbar }) => {
         setCurrentHeight(response.data[0].height);
         setGoalWeight(response.data[0].goal_weight);
         setBMI(response.data[0].bmi);
-        setMaintainCal(response.data[0].maintainance_cal)
+        setMaintainCal(response.data[0].maintainance_cal);
         setGender(response.data[0].gender);
-        setAge(response.data[0].age)
+        setAge(response.data[0].age);
         // console.log(bmi)
       })
       .catch((err) => {
@@ -183,7 +186,19 @@ const Profile = ({ snackbar }) => {
               }}
               value={email}
             />
-            <Typography sx={{padding:"20px",display:"flex",justifyContent:"center",alignItems:"center",fontFamily: `"Fraunces", serif`,fontSize:"1.5em",fontWeight:"700"}}>Enter your details</Typography>
+            <Typography
+              sx={{
+                padding: "20px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontFamily: `"Fraunces", serif`,
+                fontSize: "1.5em",
+                fontWeight: "700",
+              }}
+            >
+              Enter your details
+            </Typography>
             <TextField
               variant="outlined"
               label="What is your Current Weight in Kgs"
@@ -251,7 +266,7 @@ const Profile = ({ snackbar }) => {
               // getOptionLabel={(option) => option.title}
               // defaultValue={[top100Films[13]]}
               filterSelectedOptions
-              onChange={(e,v) => setGender(v)}
+              onChange={(e, v) => setGender(v)}
               value={Gender}
               renderInput={(params) => (
                 <TextField
@@ -295,7 +310,19 @@ const Profile = ({ snackbar }) => {
               value={age}
               onChange={(e) => setAge(e.target.value)}
             />
-            <Typography sx={{padding:"20px",display:"flex",justifyContent:"center",alignItems:"center",fontFamily: `"Fraunces", serif`,fontSize:"1.5em",fontWeight:"700"}}>Calculated based on your input</Typography>
+            <Typography
+              sx={{
+                padding: "20px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontFamily: `"Fraunces", serif`,
+                fontSize: "1.5em",
+                fontWeight: "700",
+              }}
+            >
+              Calculated based on your input
+            </Typography>
             <TextField
               variant="outlined"
               label="Your Current BMI"
@@ -562,5 +589,4 @@ const Profile = ({ snackbar }) => {
     </Box>
   );
 };
-
 export default Profile;

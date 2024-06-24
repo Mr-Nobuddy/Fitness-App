@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import Typography from "@mui/material/Typography";
-import Slider from "@mui/material/Slider";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -17,7 +16,7 @@ import CardContent from "@mui/material/CardContent";
 import NavBar from "./NavBar";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import CircularProgress from "@mui/material/CircularProgress";
-import { grey } from "@mui/material/colors";
+
 
 const Home = ({ snackbar }) => {
   const [searchFood, setSearchFood] = React.useState("");
@@ -31,7 +30,7 @@ const Home = ({ snackbar }) => {
   const [fibre, setFibre] = React.useState("");
   const [show, setShow] = React.useState(false);
   const [showLoader, setShowLoader] = React.useState(false);
-  const [check, setCheck] = React.useState({ msg: "", flag: false });
+  const [check, setCheck] = React.useState(false);
   const [breakfast, setBreakFast] = React.useState([]);
   const [lunch, setLunch] = React.useState([]);
   const [dinner, setDinner] = React.useState([]);
@@ -176,11 +175,13 @@ const Home = ({ snackbar }) => {
       .get("/getbodydata")
       .then((response) => {
         // console.log(response.data[0].maintainance_cal)
+        setCheck(true)
         setDailyCalorie(Math.round(response.data[0].maintainance_cal));
         setMaxProtien(Math.round(response.data[0].weight * 1.2));
         setMaxCarb(Math.round((response.data[0].maintainance_cal * 0.7) / 4));
         setMaxFat(Math.round((response.data[0].maintainance_cal * 0.3) / 9));
         setMaxFiber(30);
+        setCheck(false);
       })
       .catch((err) => {
         console.log(err);
@@ -232,1195 +233,1201 @@ const Home = ({ snackbar }) => {
   }, [change]);
 
   return (
-    <Box
-      sx={{
-        margin: 0,
-        padding: "20px",
-        paddingTop: "10px",
-        gap: 10,
-        backgroundColor: "yellow",
-      }}
-    >
-      <NavBar />
-      <Stack direction="row" sx={{ marginBottom: "30px" }}>
-        <Box width="40%">
-          <Typography
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontFamily: `"Fraunces", serif`,
-            }}
+    <Box>
+      <Box sx={{width:"100%",display:check?"flex":"none",justifyContent:"center",alignItems:"center"}}>
+        <CircularProgress size={100}/>
+      </Box>
+      <Box
+        sx={{
+          margin: 0,
+          padding: "20px",
+          paddingTop: "10px",
+          gap: 10,
+          backgroundColor: "yellow",
+          display:check ? "none" : "" 
+        }}
+      >
+        <NavBar />
+        <Stack direction="row" sx={{ marginBottom: "30px" }}>
+          <Box width="40%">
+            <Typography
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontFamily: `"Fraunces", serif`,
+              }}
+            >
+              <Gauge
+                width={250}
+                height={250}
+                value={value}
+                valueMin={0}
+                valueMax={dailyCalorie}
+                cornerRadius="50%"
+                sx={(theme) => ({
+                  [`& .${gaugeClasses.valueText}`]: {
+                    fontSize: 40,
+                  },
+                })}
+              />
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: `"Fraunces", serif`,
+                fontSize: "1.1rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              Calories:
+              <span>
+                {cal} / {dailyCalorie} kcal
+              </span>
+            </Typography>
+          </Box>
+          <Stack
+            width="60%"
+            direction="column"
+            sx={{ paddingRight: "10%" }}
+            spacing={3}
           >
-            <Gauge
-              width={250}
-              height={250}
-              value={value}
-              valueMin={0}
-              valueMax={dailyCalorie}
-              cornerRadius="50%"
-              sx={(theme) => ({
-                [`& .${gaugeClasses.valueText}`]: {
-                  fontSize: 40,
-                },
-              })}
-            />
-          </Typography>
+            <Stack direction="row">
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Gauge
+                    width={120}
+                    height={120}
+                    value={dailyProtien}
+                    valueMax={maxProtien}
+                    cornerRadius="50%"
+                    sx={(theme) => ({
+                      [`& .${gaugeClasses.valueText}`]: {
+                        fontSize: 20,
+                      },
+                    })}
+                  />
+                </Typography>
 
-          <Typography
-            sx={{
-              fontFamily: `"Fraunces", serif`,
-              fontSize: "1.1rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 1,
-            }}
-          >
-            Calories:
-            <span>
-              {cal} / {dailyCalorie} kcal
-            </span>
-          </Typography>
-        </Box>
-        <Stack
-          width="60%"
-          direction="column"
-          sx={{ paddingRight: "10%" }}
-          spacing={3}
-        >
-          <Stack direction="row">
-            <Box sx={{ width: "50%" }}>
-              <Typography
-                sx={{
-                  fontFamily: `"Fraunces", serif`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Gauge
-                  width={120}
-                  height={120}
-                  value={dailyProtien}
-                  valueMax={maxProtien}
-                  cornerRadius="50%"
-                  sx={(theme) => ({
-                    [`& .${gaugeClasses.valueText}`]: {
-                      fontSize: 25,
-                    },
-                  })}
-                />
-              </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    fontSize: "1.1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 1,
+                  }}
+                >
+                  Protiens:
+                  <span>
+                    {dailyProtien}g / {maxProtien}g
+                  </span>
+                </Typography>
+              </Box>
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Gauge
+                    width={120}
+                    height={120}
+                    value={dailyCarbohydrates}
+                    valueMax={maxCarb}
+                    cornerRadius="50%"
+                    sx={(theme) => ({
+                      [`& .${gaugeClasses.valueText}`]: {
+                        fontSize: 20,
+                      },
+                    })}
+                  />
+                </Typography>
 
-              <Typography
-                sx={{
-                  fontFamily: `"Fraunces", serif`,
-                  fontSize: "1.1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 1,
-                }}
-              >
-                Protiens:
-                <span>
-                  {dailyProtien}g / {maxProtien}g
-                </span>
-              </Typography>
-            </Box>
-            <Box sx={{ width: "50%" }}>
-              <Typography
-                sx={{
-                  fontFamily: `"Fraunces", serif`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Gauge
-                  width={120}
-                  height={120}
-                  value={dailyCarbohydrates}
-                  valueMax={maxCarb}
-                  cornerRadius="50%"
-                  sx={(theme) => ({
-                    [`& .${gaugeClasses.valueText}`]: {
-                      fontSize: 25,
-                    },
-                  })}
-                />
-              </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    fontSize: "1.1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 1,
+                  }}
+                >
+                  Carbohydrates:
+                  <span>
+                    {dailyCarbohydrates}g / {maxCarb}g
+                  </span>
+                </Typography>
+              </Box>
+            </Stack>
+            <Stack direction="row">
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Gauge
+                    width={120}
+                    height={120}
+                    value={dailyFats}
+                    valueMax={maxFat}
+                    cornerRadius="50%"
+                    sx={(theme) => ({
+                      [`& .${gaugeClasses.valueText}`]: {
+                        fontSize: 20,
+                      },
+                    })}
+                  />
+                </Typography>
 
-              <Typography
-                sx={{
-                  fontFamily: `"Fraunces", serif`,
-                  fontSize: "1.1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 1,
-                }}
-              >
-                Carbohydrates:
-                <span>
-                  {dailyCarbohydrates}g / {maxCarb}g
-                </span>
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="row">
-            <Box sx={{ width: "50%" }}>
-              <Typography
-                sx={{
-                  fontFamily: `"Fraunces", serif`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Gauge
-                  width={120}
-                  height={120}
-                  value={dailyFats}
-                  valueMax={maxFat}
-                  cornerRadius="50%"
-                  sx={(theme) => ({
-                    [`& .${gaugeClasses.valueText}`]: {
-                      fontSize: 25,
-                    },
-                  })}
-                />
-              </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    fontSize: "1.1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 1,
+                  }}
+                >
+                  Fats:
+                  <span>
+                    {dailyFats}g / {maxFat}g
+                  </span>
+                </Typography>
+              </Box>
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Gauge
+                    width={120}
+                    height={120}
+                    value={dailyFibre}
+                    valueMax={maxFiber}
+                    cornerRadius="50%"
+                    sx={(theme) => ({
+                      [`& .${gaugeClasses.valueText}`]: {
+                        fontSize: 20,
+                      },
+                    })}
+                  />
+                </Typography>
 
-              <Typography
-                sx={{
-                  fontFamily: `"Fraunces", serif`,
-                  fontSize: "1.1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 1,
-                }}
-              >
-                Fats:
-                <span>
-                  {dailyFats}g / {maxFat}g
-                </span>
-              </Typography>
-            </Box>
-            <Box sx={{ width: "50%" }}>
-              <Typography
-                sx={{
-                  fontFamily: `"Fraunces", serif`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Gauge
-                  width={120}
-                  height={120}
-                  value={dailyFibre}
-                  valueMax={maxFiber}
-                  cornerRadius="50%"
-                  sx={(theme) => ({
-                    [`& .${gaugeClasses.valueText}`]: {
-                      fontSize: 25,
-                    },
-                  })}
-                />
-              </Typography>
-
-              <Typography
-                sx={{
-                  fontFamily: `"Fraunces", serif`,
-                  fontSize: "1.1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 1,
-                }}
-              >
-                Fiber:
-                <span>
-                  {dailyFibre}g / {maxFiber}g
-                </span>
-              </Typography>
-            </Box>
+                <Typography
+                  sx={{
+                    fontFamily: `"Fraunces", serif`,
+                    fontSize: "1.1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 1,
+                  }}
+                >
+                  Fiber:
+                  <span>
+                    {dailyFibre}g / {maxFiber}g
+                  </span>
+                </Typography>
+              </Box>
+            </Stack>
           </Stack>
         </Stack>
-      </Stack>
-      <Typography
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontWeight: "900",
-          fontSize: "2.2rem",
-          marginBottom: "10px",
-          fontFamily: `"Fraunces", serif`,
-        }}
-      >
-        Add your meals
-      </Typography>
-      <Box
-        sx={{
-          paddingLeft: "30px",
-          paddingRight: "30px",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <TextField
-          id="outlined-basic"
-          label="Search for a food"
-          variant="outlined"
-          onChange={(e) => setSearchFood(e.target.value)}
+        <Typography
           sx={{
-            "& fieldset": {
-              borderColor: "black",
-              fontFamily: `"Fraunces", serif`,
-            },
-            "& label": { color: "black", fontFamily: `"Fraunces", serif` },
-            "& input": { color: "black", fontFamily: `"Fraunces", serif` },
-            "&:hover": {
-              borderColor: "black",
-              fontFamily: `"Fraunces", serif`,
-            },
-            width: "49%",
-            fontFamily: `"Fraunces", serif`,
-          }}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Enter the servings"
-          variant="outlined"
-          onChange={(e) => setServings(e.target.value)}
-          sx={{
-            "& fieldset": {
-              borderColor: "black",
-              fontFamily: `"Fraunces", serif`,
-            },
-            "& label": { color: "black", fontFamily: `"Fraunces", serif` },
-            "& input": { color: "black", fontFamily: `"Fraunces", serif` },
-            "&:hover": {
-              borderColor: "black",
-              fontFamily: `"Fraunces", serif`,
-            },
-            width: "49%",
-          }}
-        />
-      </Box>
-      <Box
-        sx={{
-          marginTop: "20px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          variant="contained"
-          sx={{
-            width: "40%",
-            height: "55px",
-            "&:hover": { backgroundColor: "black", scale: "110%" },
-            "&:active": { scale: "90%" },
-            borderRadius: "50px",
-            marginBottom: "20px",
-            fontFamily: `"Fraunces", serif`,
-            fontSize: "1.2em",
-            transition: "all ease 0.2s",
-            // display:show ? "none":"flex"
-          }}
-          onClick={handleSearch}
-        >
-          {" "}
-          Search{" "}
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          display: showLoader ? "flex" : "none",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-      {show ? (
-        <Box
-          sx={{
-            borderRadius: "50px",
-            marginLeft: "50px",
-            marginRight: "50px",
+            width: "100%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            fontWeight: "900",
+            fontSize: "2.2rem",
+            marginBottom: "10px",
             fontFamily: `"Fraunces", serif`,
           }}
         >
-          <Card
+          Add your meals
+        </Typography>
+        <Box
+          sx={{
+            paddingLeft: "30px",
+            paddingRight: "30px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <TextField
+            id="outlined-basic"
+            label="Search for a food"
+            variant="outlined"
+            onChange={(e) => setSearchFood(e.target.value)}
             sx={{
-              minWidth: 300,
-              width: "50%",
-              marginTop: "20px",
+              "& fieldset": {
+                borderColor: "black",
+                fontFamily: `"Fraunces", serif`,
+              },
+              "& label": { color: "black", fontFamily: `"Fraunces", serif` },
+              "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+              "&:hover": {
+                borderColor: "black",
+                fontFamily: `"Fraunces", serif`,
+              },
+              width: "49%",
               fontFamily: `"Fraunces", serif`,
             }}
-            elevation={3}
-          >
-            <CardContent>
-              <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography
-                  sx={{
-                    fontWeight: "900",
-                    fontSize: "2.5rem",
-                    textAlign: "start",
-                    width: "80%",
-                    // border:"1px solid black"
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  {name}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.1rem",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    width: "20%",
-                    // border:"1px solid black"
-                  }}
-                  // onClick={() => setShow(false)}
-                >
-                  <IoIosCloseCircleOutline
-                    size={40}
-                    onClick={() => setShow(false)}
-                    style={{ cursor: "pointer" }}
-                  />
-                </Typography>
-              </Stack>
-
-              <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography
-                  sx={{
-                    fontWeight: "900",
-                    fontSize: "1.5rem",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  Servings
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.1rem",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    width: "100%",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  {servings}
-                </Typography>
-              </Stack>
-
-              <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography
-                  sx={{
-                    fontWeight: "900",
-                    fontSize: "1.5rem",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  Calories
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.1rem",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    width: "100%",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  {calorie} calories
-                </Typography>
-              </Stack>
-
-              <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography
-                  sx={{
-                    fontWeight: "900",
-                    fontSize: "1.5rem",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  Protien
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.1rem",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    width: "100%",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  {protien} g
-                </Typography>
-              </Stack>
-
-              <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography
-                  sx={{
-                    fontWeight: "900",
-                    fontSize: "1.5rem",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  Carbohydrates
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.1rem",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    width: "100%",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  {carbo} g
-                </Typography>
-              </Stack>
-
-              <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography
-                  sx={{
-                    fontWeight: "900",
-                    fontSize: "1.5rem",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  Fats
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.1rem",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    width: "100%",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  {fats} g
-                </Typography>
-              </Stack>
-
-              <Stack sx={{ marginBottom: "10px" }} direction="row">
-                <Typography
-                  sx={{
-                    fontWeight: "900",
-                    fontSize: "1.5rem",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  Fiber
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "1.1rem",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    width: "100%",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  {fibre} g
-                </Typography>
-              </Stack>
-            </CardContent>
-            <CardActions>
-              <Stack
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-                direction="row"
-                spacing={4}
-              >
-                <Button
-                  variant="contained"
-                  sx={{
-                    fontFamily: `"Fraunces", serif`,
-                    "&:hover": { backgroundColor: "black", scale: "110%" },
-                    "&:active": { scale: "90%" },
-                    transition: "all ease 0.2s",
-                  }}
-                  onClick={handleAddToBreakFast}
-                >
-                  Add to Breakfast
-                </Button>
-                <Button
-                  variant="contained"
-                  sx={{
-                    fontFamily: `"Fraunces", serif`,
-                    "&:hover": { backgroundColor: "black", scale: "110%" },
-                    "&:active": { scale: "90%" },
-                    transition: "all ease 0.2s",
-                  }}
-                  onClick={handleAddToLunch}
-                >
-                  Add to Lunch
-                </Button>
-                <Button
-                  variant="contained"
-                  sx={{
-                    fontFamily: `"Fraunces", serif`,
-                    "&:hover": { backgroundColor: "black", scale: "110%" },
-                    "&:active": { scale: "90%" },
-                    transition: "all ease 0.2s",
-                  }}
-                  onClick={handleAddToDinner}
-                >
-                  Add to Dinner
-                </Button>
-              </Stack>
-            </CardActions>
-          </Card>
+          />
+          <TextField
+            id="outlined-basic"
+            label="Enter the servings"
+            variant="outlined"
+            onChange={(e) => setServings(e.target.value)}
+            sx={{
+              "& fieldset": {
+                borderColor: "black",
+                fontFamily: `"Fraunces", serif`,
+              },
+              "& label": { color: "black", fontFamily: `"Fraunces", serif` },
+              "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+              "&:hover": {
+                borderColor: "black",
+                fontFamily: `"Fraunces", serif`,
+              },
+              width: "49%",
+            }}
+          />
         </Box>
-      ) : (
-        ""
-      )}
-      <Box sx={{ marginTop: "20px", width: "100%", marginBottom: "70px" }}>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-            sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
+        <Box
+          sx={{
+            marginTop: "20px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{
+              width: "40%",
+              height: "55px",
+              "&:hover": { backgroundColor: "black", scale: "110%" },
+              "&:active": { scale: "90%" },
+              borderRadius: "50px",
+              marginBottom: "20px",
+              fontFamily: `"Fraunces", serif`,
+              fontSize: "1.2em",
+              transition: "all ease 0.2s",
+              // display:show ? "none":"flex"
+            }}
+            onClick={handleSearch}
           >
-            BreakFast
-          </AccordionSummary>
-          <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
-            <Box sx={{ width: "100%" }}>
-              <Typography
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  // justifyContent: "space-evenly",
-                  fontFamily: `"Fraunces", serif`,
-                }}
-              >
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Meal Name
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Servings
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Calories
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Protien
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Carbohydrates
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Fats
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Fiber
-                </span>
-              </Typography>
-            </Box>
-            {breakfast.length !== 0 ? (
-              breakfast.map((item) => (
-                <Box sx={{ width: "100%" }}>
+            {" "}
+            Search{" "}
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            display: showLoader ? "flex" : "none",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+        {show ? (
+          <Box
+            sx={{
+              borderRadius: "50px",
+              marginLeft: "50px",
+              marginRight: "50px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontFamily: `"Fraunces", serif`,
+            }}
+          >
+            <Card
+              sx={{
+                minWidth: 300,
+                width: "50%",
+                marginTop: "20px",
+                fontFamily: `"Fraunces", serif`,
+              }}
+              elevation={3}
+            >
+              <CardContent>
+                <Stack sx={{ marginBottom: "10px" }} direction="row">
                   <Typography
                     sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      // justifyContent: "space-evenly",
-                      fontFamily: `"Fraunces", serif`,
+                      fontWeight: "900",
+                      fontSize: "2.5rem",
+                      textAlign: "start",
+                      width: "80%",
                       // border:"1px solid black"
+                      fontFamily: `"Fraunces", serif`,
                     }}
                   >
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_name}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_servings}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_calories}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_protien}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_carbohydrates}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_fats}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_fiber}
-                    </span>
+                    {name}
                   </Typography>
-                </Box>
-              ))
-            ) : (
-              <Typography
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
-                  marginTop: "20px",
-                }}
-              >
-                No Meals Found
-              </Typography>
-            )}
-          </AccordionDetails>
-        </Accordion>
+                  <Typography
+                    sx={{
+                      fontSize: "1.1rem",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      width: "20%",
+                      // border:"1px solid black"
+                    }}
+                    // onClick={() => setShow(false)}
+                  >
+                    <IoIosCloseCircleOutline
+                      size={40}
+                      onClick={() => setShow(false)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </Typography>
+                </Stack>
 
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-            sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
-          >
-            Lunch
-          </AccordionSummary>
-          <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
-            <Box sx={{ width: "100%" }}>
-              <Typography
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  // justifyContent: "space-evenly",
-                  fontFamily: `"Fraunces", serif`,
-                }}
-              >
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Meal Name
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Servings
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Calories
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Protien
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Carbohydrates
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Fats
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Fiber
-                </span>
-              </Typography>
-            </Box>
-            {lunch.length !== 0 ? (
-              lunch.map((item) => (
-                <Box sx={{ width: "100%" }}>
+                <Stack sx={{ marginBottom: "10px" }} direction="row">
                   <Typography
                     sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      // justifyContent: "space-evenly",
+                      fontWeight: "900",
+                      fontSize: "1.5rem",
                       fontFamily: `"Fraunces", serif`,
-                      // border:"1px solid black"
                     }}
                   >
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_name}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_servings}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_calories}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_protien}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_carbohydrates}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_fats}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_fiber}
-                    </span>
+                    Servings
                   </Typography>
-                </Box>
-              ))
-            ) : (
-              <Typography
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
-                  marginTop: "20px",
-                }}
-              >
-                No Meals Found
-              </Typography>
-            )}
-          </AccordionDetails>
-        </Accordion>
+                  <Typography
+                    sx={{
+                      fontSize: "1.1rem",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      width: "100%",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    {servings}
+                  </Typography>
+                </Stack>
 
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-            sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
-          >
-            Dinner
-          </AccordionSummary>
-          <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
-            <Box sx={{ width: "100%" }}>
-              <Typography
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  // justifyContent: "space-evenly",
-                  fontFamily: `"Fraunces", serif`,
-                }}
-              >
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Meal Name
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Servings
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Calories
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Protien
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Carbohydrates
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Fats
-                </span>
-                <span
-                  style={{
-                    border: "1px solid black",
-                    width: "14%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  Fiber
-                </span>
-              </Typography>
-            </Box>
-            {dinner.length !== 0 ? (
-              dinner.map((item) => (
-                <Box sx={{ width: "100%" }}>
+                <Stack sx={{ marginBottom: "10px" }} direction="row">
                   <Typography
                     sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      // justifyContent: "space-evenly",
+                      fontWeight: "900",
+                      fontSize: "1.5rem",
                       fontFamily: `"Fraunces", serif`,
-                      // border:"1px solid black"
                     }}
                   >
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_name}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_servings}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_calories}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_protien}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_carbohydrates}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_fats}
-                    </span>
-                    <span
-                      style={{
-                        border: "1px solid black",
-                        width: "14%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {item.meal_fiber}
-                    </span>
+                    Calories
                   </Typography>
-                </Box>
-              ))
-            ) : (
-              <Typography
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
-                  marginTop: "20px",
-                }}
-              >
-                No Meals Found
-              </Typography>
-            )}
-          </AccordionDetails>
-        </Accordion>
+                  <Typography
+                    sx={{
+                      fontSize: "1.1rem",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      width: "100%",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    {calorie} calories
+                  </Typography>
+                </Stack>
+
+                <Stack sx={{ marginBottom: "10px" }} direction="row">
+                  <Typography
+                    sx={{
+                      fontWeight: "900",
+                      fontSize: "1.5rem",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    Protien
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "1.1rem",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      width: "100%",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    {protien} g
+                  </Typography>
+                </Stack>
+
+                <Stack sx={{ marginBottom: "10px" }} direction="row">
+                  <Typography
+                    sx={{
+                      fontWeight: "900",
+                      fontSize: "1.5rem",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    Carbohydrates
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "1.1rem",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      width: "100%",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    {carbo} g
+                  </Typography>
+                </Stack>
+
+                <Stack sx={{ marginBottom: "10px" }} direction="row">
+                  <Typography
+                    sx={{
+                      fontWeight: "900",
+                      fontSize: "1.5rem",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    Fats
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "1.1rem",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      width: "100%",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    {fats} g
+                  </Typography>
+                </Stack>
+
+                <Stack sx={{ marginBottom: "10px" }} direction="row">
+                  <Typography
+                    sx={{
+                      fontWeight: "900",
+                      fontSize: "1.5rem",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    Fiber
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "1.1rem",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      width: "100%",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    {fibre} g
+                  </Typography>
+                </Stack>
+              </CardContent>
+              <CardActions>
+                <Stack
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                  direction="row"
+                  spacing={4}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontFamily: `"Fraunces", serif`,
+                      "&:hover": { backgroundColor: "black", scale: "110%" },
+                      "&:active": { scale: "90%" },
+                      transition: "all ease 0.2s",
+                    }}
+                    onClick={handleAddToBreakFast}
+                  >
+                    Add to Breakfast
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontFamily: `"Fraunces", serif`,
+                      "&:hover": { backgroundColor: "black", scale: "110%" },
+                      "&:active": { scale: "90%" },
+                      transition: "all ease 0.2s",
+                    }}
+                    onClick={handleAddToLunch}
+                  >
+                    Add to Lunch
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontFamily: `"Fraunces", serif`,
+                      "&:hover": { backgroundColor: "black", scale: "110%" },
+                      "&:active": { scale: "90%" },
+                      transition: "all ease 0.2s",
+                    }}
+                    onClick={handleAddToDinner}
+                  >
+                    Add to Dinner
+                  </Button>
+                </Stack>
+              </CardActions>
+            </Card>
+          </Box>
+        ) : (
+          ""
+        )}
+        <Box sx={{ marginTop: "20px", width: "100%", marginBottom: "70px" }}>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+              sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
+            >
+              BreakFast
+            </AccordionSummary>
+            <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
+              <Box sx={{ width: "100%" }}>
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    // justifyContent: "space-evenly",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Meal Name
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Servings
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Calories
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Protien
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Carbohydrates
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Fats
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Fiber
+                  </span>
+                </Typography>
+              </Box>
+              {breakfast.length !== 0 ? (
+                breakfast.map((item) => (
+                  <Box sx={{ width: "100%" }}>
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        // justifyContent: "space-evenly",
+                        fontFamily: `"Fraunces", serif`,
+                        // border:"1px solid black"
+                      }}
+                    >
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_name}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_servings}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_calories}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_protien}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_carbohydrates}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_fats}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_fiber}
+                      </span>
+                    </Typography>
+                  </Box>
+                ))
+              ) : (
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    marginTop: "20px",
+                  }}
+                >
+                  No Meals Found
+                </Typography>
+              )}
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+              sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
+            >
+              Lunch
+            </AccordionSummary>
+            <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
+              <Box sx={{ width: "100%" }}>
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    // justifyContent: "space-evenly",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Meal Name
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Servings
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Calories
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Protien
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Carbohydrates
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Fats
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Fiber
+                  </span>
+                </Typography>
+              </Box>
+              {lunch.length !== 0 ? (
+                lunch.map((item) => (
+                  <Box sx={{ width: "100%" }}>
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        // justifyContent: "space-evenly",
+                        fontFamily: `"Fraunces", serif`,
+                        // border:"1px solid black"
+                      }}
+                    >
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_name}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_servings}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_calories}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_protien}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_carbohydrates}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_fats}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_fiber}
+                      </span>
+                    </Typography>
+                  </Box>
+                ))
+              ) : (
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    marginTop: "20px",
+                  }}
+                >
+                  No Meals Found
+                </Typography>
+              )}
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+              sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
+            >
+              Dinner
+            </AccordionSummary>
+            <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
+              <Box sx={{ width: "100%" }}>
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    // justifyContent: "space-evenly",
+                    fontFamily: `"Fraunces", serif`,
+                  }}
+                >
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Meal Name
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Servings
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Calories
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Protien
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Carbohydrates
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Fats
+                  </span>
+                  <span
+                    style={{
+                      border: "1px solid black",
+                      width: "14%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Fiber
+                  </span>
+                </Typography>
+              </Box>
+              {dinner.length !== 0 ? (
+                dinner.map((item) => (
+                  <Box sx={{ width: "100%" }}>
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        // justifyContent: "space-evenly",
+                        fontFamily: `"Fraunces", serif`,
+                        // border:"1px solid black"
+                      }}
+                    >
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_name}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_servings}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_calories}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_protien}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_carbohydrates}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_fats}
+                      </span>
+                      <span
+                        style={{
+                          border: "1px solid black",
+                          width: "14%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {item.meal_fiber}
+                      </span>
+                    </Typography>
+                  </Box>
+                ))
+              ) : (
+                <Typography
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    marginTop: "20px",
+                  }}
+                >
+                  No Meals Found
+                </Typography>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        </Box>
       </Box>
     </Box>
   );
