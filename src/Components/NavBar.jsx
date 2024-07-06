@@ -51,12 +51,13 @@ const NavBar = () => {
   React.useEffect(() => {
     axios.get('/getimage')
     .then((response) => {
+      // console.log(response)
       setImage(response.data[0].image)
     })
     .catch((err) => {
       console.log(err)
     })
-  })
+  },[])
   const pages = [
     <Typography
       sx={{ fontSize: "0.9rem",fontFamily:`"Fraunces", serif` }}
@@ -96,7 +97,7 @@ const NavBar = () => {
   ];
   return (
     <Box sx={{ margin: "20px" }}>
-      <AppBar position="static" sx={{ borderRadius: "50px" }}>
+      <AppBar position="static" sx={{ borderRadius: "50px",backgroundColor:"#5AB2FF" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" } }} />

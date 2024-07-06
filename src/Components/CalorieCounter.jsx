@@ -16,7 +16,7 @@ import CardContent from "@mui/material/CardContent";
 import NavBar from "./NavBar";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import Loader from "./Loader";
 
 const Home = ({ snackbar }) => {
   const [searchFood, setSearchFood] = React.useState("");
@@ -169,18 +169,24 @@ const Home = ({ snackbar }) => {
     }
   };
 
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   //for getting body data
   React.useEffect(() => {
+    setCheck(true);
     axios
       .get("/getbodydata")
       .then((response) => {
         // console.log(response.data[0].maintainance_cal)
-        setCheck(true)
+
         setDailyCalorie(Math.round(response.data[0].maintainance_cal));
         setMaxProtien(Math.round(response.data[0].weight * 1.2));
-        setMaxCarb(Math.round((response.data[0].maintainance_cal * 0.7) / 4));
+        setMaxCarb(Math.round((response.data[0].maintainance_cal * 0.7) / 4)-50);
         setMaxFat(Math.round((response.data[0].maintainance_cal * 0.3) / 9));
         setMaxFiber(30);
+        sleep(2000)
         setCheck(false);
       })
       .catch((err) => {
@@ -233,9 +239,18 @@ const Home = ({ snackbar }) => {
   }, [change]);
 
   return (
-    <Box>
-      <Box sx={{width:"100%",display:check?"flex":"none",justifyContent:"center",alignItems:"center"}}>
-        <CircularProgress size={100}/>
+    <Box sx={{ width: "100%", height: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          display: check ? "flex" : "none",
+          justifyContent: "center",
+          alignItems: "center",
+          // border: "1px solid black",
+        }}
+      >
+        <Loader />
       </Box>
       <Box
         sx={{
@@ -243,8 +258,9 @@ const Home = ({ snackbar }) => {
           padding: "20px",
           paddingTop: "10px",
           gap: 10,
-          backgroundColor: "yellow",
-          display:check ? "none" : "" 
+          // backgroundColor: "#FFF9D0",
+          background:"linear-gradient(#FFF9D0,#76ABAE)",
+          display: check ? "none" : "",
         }}
       >
         <NavBar />
@@ -281,6 +297,7 @@ const Home = ({ snackbar }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 1,
+                color:"#222831"
               }}
             >
               Calories:
@@ -327,6 +344,7 @@ const Home = ({ snackbar }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1,
+                    color:"#222831"
                   }}
                 >
                   Protiens:
@@ -366,6 +384,7 @@ const Home = ({ snackbar }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1,
+                    color:"#222831"
                   }}
                 >
                   Carbohydrates:
@@ -407,6 +426,7 @@ const Home = ({ snackbar }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1,
+                    color:"#222831"
                   }}
                 >
                   Fats:
@@ -446,6 +466,7 @@ const Home = ({ snackbar }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1,
+                    color:"#222831"
                   }}
                 >
                   Fiber:
@@ -467,6 +488,7 @@ const Home = ({ snackbar }) => {
             fontSize: "2.2rem",
             marginBottom: "10px",
             fontFamily: `"Fraunces", serif`,
+            color:"#222831"
           }}
         >
           Add your meals
@@ -486,13 +508,13 @@ const Home = ({ snackbar }) => {
             onChange={(e) => setSearchFood(e.target.value)}
             sx={{
               "& fieldset": {
-                borderColor: "black",
+                borderColor: "#222831",
                 fontFamily: `"Fraunces", serif`,
               },
-              "& label": { color: "black", fontFamily: `"Fraunces", serif` },
-              "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+              "& label": { color: "#222831", fontFamily: `"Fraunces", serif` },
+              "& input": { color: "#222831", fontFamily: `"Fraunces", serif` },
               "&:hover": {
-                borderColor: "black",
+                borderColor: "#222831",
                 fontFamily: `"Fraunces", serif`,
               },
               width: "49%",
@@ -506,13 +528,13 @@ const Home = ({ snackbar }) => {
             onChange={(e) => setServings(e.target.value)}
             sx={{
               "& fieldset": {
-                borderColor: "black",
+                borderColor: "#222831",
                 fontFamily: `"Fraunces", serif`,
               },
-              "& label": { color: "black", fontFamily: `"Fraunces", serif` },
-              "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+              "& label": { color: "#222831", fontFamily: `"Fraunces", serif` },
+              "& input": { color: "#222831", fontFamily: `"Fraunces", serif` },
               "&:hover": {
-                borderColor: "black",
+                borderColor: "#222831",
                 fontFamily: `"Fraunces", serif`,
               },
               width: "49%",
@@ -539,6 +561,7 @@ const Home = ({ snackbar }) => {
               fontFamily: `"Fraunces", serif`,
               fontSize: "1.2em",
               transition: "all ease 0.2s",
+              backgroundColor:"#5AB2FF"
               // display:show ? "none":"flex"
             }}
             onClick={handleSearch}
@@ -815,11 +838,11 @@ const Home = ({ snackbar }) => {
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
               id="panel1-header"
-              sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
+              sx={{ backgroundColor: "#A0DEFF", fontSize: "1.3em" }}
             >
               BreakFast
             </AccordionSummary>
-            <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
+            <AccordionDetails sx={{ backgroundColor: "#CAF4FF" }}>
               <Box sx={{ width: "100%" }}>
                 <Typography
                   sx={{
@@ -1021,11 +1044,11 @@ const Home = ({ snackbar }) => {
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
               id="panel1-header"
-              sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
+              sx={{ backgroundColor: "#A0DEFF", fontSize: "1.3em" }}
             >
               Lunch
             </AccordionSummary>
-            <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
+            <AccordionDetails sx={{ backgroundColor: "#CAF4FF" }}>
               <Box sx={{ width: "100%" }}>
                 <Typography
                   sx={{
@@ -1227,11 +1250,11 @@ const Home = ({ snackbar }) => {
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1-content"
               id="panel1-header"
-              sx={{ backgroundColor: "#92FE9D", fontSize: "1.3em" }}
+              sx={{ backgroundColor: "#A0DEFF", fontSize: "1.3em" }}
             >
               Dinner
             </AccordionSummary>
-            <AccordionDetails sx={{ backgroundColor: "#00C9FF" }}>
+            <AccordionDetails sx={{ backgroundColor: "#CAF4FF" }}>
               <Box sx={{ width: "100%" }}>
                 <Typography
                   sx={{
