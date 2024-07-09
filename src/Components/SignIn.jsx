@@ -1,154 +1,185 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
-import { Divider } from "@mui/material";
+import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 
-function Copyright(props) {
+const SignIn = ({ snackbar }) => {
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+
+  const validate = () => {
+    if(email !== "" && pass !== ""){
+      axios
+      .post("/validate", { email: email, pass:pass })
+      .then((response) => {
+        // console.log(response.data.message);
+        if (response.data.message === "allowed") {
+          document.location.replace("/caloriecounter");
+        } else {
+          snackbar({ message: "Wrong email or password", severity: "error" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+    else{
+      snackbar({ message: "Please fill all the fields", severity: "warning" });
+    }
+  };
+
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: "20px",
+        paddingBottom: "31px",
+        background: "linear-gradient(#FFF9D0,#76ABAE)",
+      }}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme();
-
-export default function SignIn() {
-  const navigate = useNavigate();
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //   });
-  // };
-  React.useEffect(() => {
-    axios.get('/checkcookie')
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  },[]);
-
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{ fontFamily: `"Fraunces", serif`,color:"black" }}
-          >
-            Sign in
-          </Typography>
+      <Box sx={{ width: "65%" }}>
+        <Stack direction="row" sx={{ borderRadius: "20px", height: "500px",display:{xs:"flex"},justifyContent:{xs:"center"}}}>
+          <Box sx={{ width: "50%",display:{xs:"none",md:"flex"}}}>
+            <img
+              src="/images/fitness-gym.jpg"
+              alt=""
+              width="100%"
+              height="100%"
+              style={{
+                borderTopLeftRadius: "20px",
+                borderBottomLeftRadius: "20px",
+              }}
+            />
+          </Box>
           <Box
-            component="form"
-            // onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+            sx={{
+              width: {sm:"60%",xl:"50%"},
+              paddingLeft: "30px",
+              paddingRight: "30px",
+              // paddingTop:"125px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              borderTopRightRadius: "20px",
+              borderBottomRightRadius: "20px",
+              borderTopLeftRadius:{xs:"20px",md:0},
+              borderBottomLeftRadius:{xs:"20px",md:0},
+              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255,255,255,0.2)",
+            }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
+            <Typography
               sx={{
-                "& fieldset": {
-                  borderColor: "black",
-                  fontFamily: `"Fraunces", serif`,
-                },
-                "& label": { color: "black", fontFamily: `"Fraunces", serif` },
-                "& input": { color: "black", fontFamily: `"Fraunces", serif` },
-                "&:hover": {
-                  borderColor: "black",
-                  fontFamily: `"Fraunces", serif`,
-                },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mb: 1,
               }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+            >
+              <Avatar
+                alt="Remy Sharp"
+                src="/images/dumbbell_17042215.png"
+                sx={{ width: 60, height: 60 }}
+              />
+            </Typography>
+            <Typography
               sx={{
-                "& fieldset": {
-                  borderColor: "black",
-                  fontFamily: `"Fraunces", serif`,
-                },
-                "& label": { color: "black", fontFamily: `"Fraunces", serif` },
-                "& input": { color: "black", fontFamily: `"Fraunces", serif` },
-                "&:hover": {
-                  borderColor: "black",
-                  fontFamily: `"Fraunces", serif`,
-                },
+                textAlign: "center",
+                fontSize: "30px",
+                fontWeight: "600",
+                fontFamily: `"Fraunces", serif`,
+                mb: 2,
               }}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="default" />}
-              label="Remember me"
-              sx={{ fontFamily: `"Fraunces", serif`,"& label": { color: "white", fontFamily: `"Fraunces", serif` }, }}
-            />
+            >
+              Sign In
+            </Typography>
+            <Stack direction="column" spacing={2}>
+              <TextField
+                variant="outlined"
+                label="Email Address"
+                onChange={(e) => setEmail(e.target.value)}
+                sx={{
+                  "& fieldset": {
+                    borderColor: "#222831",
+                    fontFamily: `"Fraunces", serif`,
+                  },
+                  "& label": {
+                    color: "#222831",
+                    fontFamily: `"Fraunces", serif`,
+                  },
+                  "& input": {
+                    color: "#222831",
+                    fontFamily: `"Fraunces", serif`,
+                  },
+                  "&:hover": {
+                    borderColor: "#222831",
+                    fontFamily: `"Fraunces", serif`,
+                  },
+                }}
+              />
+
+              <TextField
+                variant="outlined"
+                label="Password"
+                onChange={(e) => setPass(e.target.value)}
+                sx={{
+                  "& fieldset": {
+                    borderColor: "#222831",
+                    fontFamily: `"Fraunces", serif`,
+                  },
+                  "& label": {
+                    color: "#222831",
+                    fontFamily: `"Fraunces", serif`,
+                  },
+                  "& input": {
+                    color: "#222831",
+                    fontFamily: `"Fraunces", serif`,
+                  },
+                  "&:hover": {
+                    borderColor: "#222831",
+                    fontFamily: `"Fraunces", serif`,
+                  },
+                }}
+              />
+            </Stack>
+            <Typography
+              sx={{
+                textDecoration: "underline",
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                fontSize: "12px",
+                color: "blue",
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                fontFamily: `"Fraunces", serif`,
+                cursor: "pointer",
+              }}
+            >
+              Forgot Password?
+            </Typography>
             <Button
-              type="submit"
-              fullWidth
               variant="contained"
               sx={{
-                mt: 3,
-                mb: 2,
+                width: "100%",
                 fontFamily: `"Fraunces", serif`,
-                transition: "all ease 0.2s",
-                "&:hover": { backgroundColor: "black", scale: "110%" },
-                "&:active": { scale: "99%" },
+                "&:hover": {
+                  backgroundColor: "black",
+                  scale: "110%",
+                  borderRadius: "50px",
+                },
+                "&:active": { scale: "90%" },
+                transition: "ease-in-out 0.2s",
+                mt: 1,
+                mb: 2,
               }}
-              onClick={() => navigate("/caloriecounter")}
+              onClick={validate}
             >
               Sign In
             </Button>
@@ -162,37 +193,26 @@ export default function SignIn() {
                 mb: 2,
                 fontFamily: `"Fraunces", serif`,
                 transition: "all ease 0.2s",
-                "&:hover": { backgroundColor: "black", scale: "110%",color:"white" },
+                borderColor: "black",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "black",
+                  scale: "110%",
+                  color: "white",
+                  borderColor: "black",
+                  borderRadius: "50px",
+                },
                 "&:active": { scale: "99%" },
               }}
               href="http://localhost:2604/auth/google"
             >
               <FcGoogle size={33} style={{ marginRight: "5px" }} /> Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link
-                  href="#"
-                  variant="body2"
-                  sx={{ fontFamily: `"Fraunces", serif` }}
-                >
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link
-                  href="#"
-                  variant="body2"
-                  sx={{ fontFamily: `"Fraunces", serif` }}
-                >
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+        </Stack>
+      </Box>
+    </Box>
   );
-}
+};
+
+export default SignIn;

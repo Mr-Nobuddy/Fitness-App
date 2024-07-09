@@ -21,7 +21,6 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
-import { Gauge } from "@mui/x-charts/Gauge";
 import Loader from "./Loader";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -39,11 +38,20 @@ const Profile = ({ snackbar }) => {
   const [Gender, setGender] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [age, setAge] = useState("");
+
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showBMIGauge, setShowBMIGauge] = useState(false);
   const [check, setCheck] = React.useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordErr, setPasswordErr] = useState({
+    oldPass: false,
+    newPass: false,
+    confirmPass: false,
+  });
 
   const [open, setOpen] = React.useState(false);
 
@@ -63,6 +71,40 @@ const Profile = ({ snackbar }) => {
 
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((showConfirmPassword) => !showConfirmPassword);
+
+  const updatePassword = () => {
+    if (newPassword === confirmPassword) {
+      axios
+        .put("/updatepassword", {
+          oldPassword: oldPassword.trim(),
+          newPassword: newPassword.trim(),
+        })
+        .then((_) => {
+          snackbar({ message: "Password Updated Successfully" });
+          setOldPassword("");
+          setNewPassword("");
+          setConfirmPassword("");
+          setPasswordErr({
+            oldPass: false,
+            newPass: false,
+            confirmPass: false,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response && err.response.status === 401) {
+            setPasswordErr({ oldPass: true });
+          } else {
+            snackbar({
+              message: "Error Occurred while updating password",
+              severity: "error",
+            });
+          }
+        });
+    } else {
+      setPasswordErr({ newPass: true, confirmPass: true });
+    }
+  };
 
   const updateProfile = () => {
     setShowBMIGauge(!showBMIGauge);
@@ -134,12 +176,12 @@ const Profile = ({ snackbar }) => {
           padding: "20px",
           paddingTop: "10px",
           // backgroundColor: "yellow",
-          display:check ? "none":"",
+          display: check ? "none" : "",
           // background:"linear-gradient(#FFF9D0,#76ABAE)",
           // background:"linear-gradient(rgba(160,222,255,1) 0%, rgba(38,53,93,1) 62%)"
-          backgroundImage:"url('images/3d-gym-equipment.jpg')",
-          backgroundSize:"cover",
-          backgroundRepeat:"no-repeat"
+          backgroundImage: "url('images/3d-gym-equipment.jpg')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <NavBar />
@@ -161,8 +203,8 @@ const Profile = ({ snackbar }) => {
               // boxShadow: "5px 5px 20px grey",
               borderRadius: "20px",
               padding: "15px",
-              backdropFilter:"blur(10px)",
-              backgroundColor:"rgba(255,255,255,0.3)"
+              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255,255,255,0.3)",
             }}
             direction="column"
             gap={3}
@@ -519,6 +561,14 @@ const Profile = ({ snackbar }) => {
                         variant="outlined"
                         label="Old Password"
                         type={showOldPassword ? "text" : "password"}
+                        onChange={(e) => {
+                          setOldPassword(e.target.value);
+                        }}
+                        value={oldPassword}
+                        error={passwordErr.oldPass}
+                        helperText={
+                          passwordErr.oldPass ? "Incorrect Old Password" : ""
+                        }
                         sx={{
                           "& fieldset": {
                             borderColor: "black",
@@ -555,6 +605,16 @@ const Profile = ({ snackbar }) => {
                         variant="outlined"
                         label="New Password"
                         type={showNewPassword ? "text" : "password"}
+                        onChange={(e) => {
+                          setNewPassword(e.target.value);
+                        }}
+                        value={newPassword}
+                        error={passwordErr.newPass}
+                        helperText={
+                          passwordErr.newPass
+                            ? "Not same to confirm password"
+                            : ""
+                        }
                         sx={{
                           "& fieldset": {
                             borderColor: "black",
@@ -591,6 +651,16 @@ const Profile = ({ snackbar }) => {
                         variant="outlined"
                         label="Confirm Password"
                         type={showConfirmPassword ? "text" : "password"}
+                        onChange={(e) => {
+                          setConfirmPassword(e.target.value);
+                        }}
+                        value={confirmPassword}
+                        error={passwordErr.confirmPass}
+                        helperText={
+                          passwordErr.confirmPass
+                            ? "Not same to new password"
+                            : ""
+                        }
                         sx={{
                           "& fieldset": {
                             borderColor: "black",
@@ -643,6 +713,7 @@ const Profile = ({ snackbar }) => {
                       "&:hover": { backgroundColor: "black", scale: "110%" },
                       "&:active": { scale: "99%" },
                     }}
+                    onClick={updatePassword}
                   >
                     Change Password
                   </Button>
@@ -660,7 +731,7 @@ const Profile = ({ snackbar }) => {
                 }}
                 onClick={updateProfile}
               >
-                Update
+                Update Profile
               </Button>
             </Stack>
           </Stack>

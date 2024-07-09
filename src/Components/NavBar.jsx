@@ -100,7 +100,7 @@ const NavBar = () => {
       <AppBar position="static" sx={{ borderRadius: "50px",backgroundColor:"#5AB2FF" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" } }} />
+            {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" } }} /> */}
             <Typography
               variant="h6"
               noWrap
@@ -116,7 +116,11 @@ const NavBar = () => {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              <Avatar
+                alt="Remy Sharp"
+                src="/images/dumbbell_17042215.png"
+                sx={{ width: 60, height: 60 }}
+              />
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

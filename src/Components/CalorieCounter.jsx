@@ -31,6 +31,7 @@ const Home = ({ snackbar }) => {
   const [show, setShow] = React.useState(false);
   const [showLoader, setShowLoader] = React.useState(false);
   const [check, setCheck] = React.useState(false);
+  const [err, setErr] = React.useState(false);
   const [breakfast, setBreakFast] = React.useState([]);
   const [lunch, setLunch] = React.useState([]);
   const [dinner, setDinner] = React.useState([]);
@@ -120,37 +121,45 @@ const Home = ({ snackbar }) => {
   };
 
   const handleSearch = async () => {
-    try {
-      setShowLoader(true);
-      setShow(false);
-      const response = await axios.post(
-        "https://trackapi.nutritionix.com/v2/natural/nutrients",
-        {
-          query: searchFood,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "x-app-id": "1a299a7b",
-            "x-app-key": "eedf9d333e690c05a2e66f2f26ff301c",
+    if (searchFood !== "") {
+      setErr(false);
+      try {
+        setShowLoader(true);
+        setShow(false);
+        const response = await axios.post(
+          "https://trackapi.nutritionix.com/v2/natural/nutrients",
+          {
+            query: searchFood,
           },
-        }
-      );
-      // console.log(response.data.foods[0].food_name);
-      setShowLoader(false);
-      console.log(response.data);
-      setName(response.data.foods[0].food_name);
-      setCalorie(Math.round(response.data.foods[0].nf_calories * servings));
-      setProtien(Math.round(response.data.foods[0].nf_protein * servings));
-      setCarbo(
-        Math.round(response.data.foods[0].nf_total_carbohydrate * servings)
-      );
-      setFats(Math.round(response.data.foods[0].nf_total_fat * servings));
-      setFibre(Math.round(response.data.foods[0].nf_dietary_fiber * servings));
-      setShow(true);
-      // Handle the response data here
-    } catch (error) {
-      console.error(error);
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-app-id": "1a299a7b",
+              "x-app-key": "eedf9d333e690c05a2e66f2f26ff301c",
+            },
+          }
+        );
+        // console.log(response.data.foods[0].food_name);
+        setShowLoader(false);
+        console.log(response.data);
+        setName(response.data.foods[0].food_name);
+        setCalorie(Math.round(response.data.foods[0].nf_calories * servings));
+        setProtien(Math.round(response.data.foods[0].nf_protein * servings));
+        setCarbo(
+          Math.round(response.data.foods[0].nf_total_carbohydrate * servings)
+        );
+        setFats(Math.round(response.data.foods[0].nf_total_fat * servings));
+        setFibre(
+          Math.round(response.data.foods[0].nf_dietary_fiber * servings)
+        );
+        setShow(true);
+        // Handle the response data here
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    else{
+      setErr(true);
     }
   };
 
@@ -183,10 +192,12 @@ const Home = ({ snackbar }) => {
 
         setDailyCalorie(Math.round(response.data[0].maintainance_cal));
         setMaxProtien(Math.round(response.data[0].weight * 1.2));
-        setMaxCarb(Math.round((response.data[0].maintainance_cal * 0.7) / 4)-50);
+        setMaxCarb(
+          Math.round((response.data[0].maintainance_cal * 0.7) / 4) - 50
+        );
         setMaxFat(Math.round((response.data[0].maintainance_cal * 0.3) / 9));
         setMaxFiber(30);
-        sleep(2000)
+        sleep(2000);
         setCheck(false);
       })
       .catch((err) => {
@@ -259,7 +270,7 @@ const Home = ({ snackbar }) => {
           paddingTop: "10px",
           gap: 10,
           // backgroundColor: "#FFF9D0",
-          background:"linear-gradient(#FFF9D0,#76ABAE)",
+          background: "linear-gradient(#FFF9D0,#76ABAE)",
           display: check ? "none" : "",
         }}
       >
@@ -297,7 +308,7 @@ const Home = ({ snackbar }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 1,
-                color:"#222831"
+                color: "#222831",
               }}
             >
               Calories:
@@ -344,7 +355,7 @@ const Home = ({ snackbar }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1,
-                    color:"#222831"
+                    color: "#222831",
                   }}
                 >
                   Protiens:
@@ -384,7 +395,7 @@ const Home = ({ snackbar }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1,
-                    color:"#222831"
+                    color: "#222831",
                   }}
                 >
                   Carbohydrates:
@@ -426,7 +437,7 @@ const Home = ({ snackbar }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1,
-                    color:"#222831"
+                    color: "#222831",
                   }}
                 >
                   Fats:
@@ -466,7 +477,7 @@ const Home = ({ snackbar }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1,
-                    color:"#222831"
+                    color: "#222831",
                   }}
                 >
                   Fiber:
@@ -488,7 +499,7 @@ const Home = ({ snackbar }) => {
             fontSize: "2.2rem",
             marginBottom: "10px",
             fontFamily: `"Fraunces", serif`,
-            color:"#222831"
+            color: "#222831",
           }}
         >
           Add your meals
@@ -506,6 +517,8 @@ const Home = ({ snackbar }) => {
             label="Search for a food"
             variant="outlined"
             onChange={(e) => setSearchFood(e.target.value)}
+            error={err}
+            helperText={err ? "Please fill this field" : ""}
             sx={{
               "& fieldset": {
                 borderColor: "#222831",
@@ -561,7 +574,7 @@ const Home = ({ snackbar }) => {
               fontFamily: `"Fraunces", serif`,
               fontSize: "1.2em",
               transition: "all ease 0.2s",
-              backgroundColor:"#5AB2FF"
+              backgroundColor: "#5AB2FF",
               // display:show ? "none":"flex"
             }}
             onClick={handleSearch}
@@ -1031,6 +1044,7 @@ const Home = ({ snackbar }) => {
                     justifyContent: "center",
                     width: "100%",
                     marginTop: "20px",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   No Meals Found
@@ -1237,6 +1251,7 @@ const Home = ({ snackbar }) => {
                     justifyContent: "center",
                     width: "100%",
                     marginTop: "20px",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   No Meals Found
@@ -1443,6 +1458,7 @@ const Home = ({ snackbar }) => {
                     justifyContent: "center",
                     width: "100%",
                     marginTop: "20px",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
                   No Meals Found

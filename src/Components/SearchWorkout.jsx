@@ -44,8 +44,6 @@ const SearchWorkout = () => {
       setShowLoader(false);
       setExercises(response.data);
       setShow(true);
-      handlePagination()
-      // console.log(exercises);
     } catch (error) {
       console.error(error);
     }
@@ -53,22 +51,20 @@ const SearchWorkout = () => {
 
   const handlePagination = () => {
     // console.log(page)
-    if (show === true) {
-      setBodyPart(exercises[page].bodyPart);
-      setEquipment(exercises[page].equipment);
-      setGif(exercises[page].gifUrl);
-      setWorkOutName(exercises[page].name);
-      setTargetMuscle(exercises[page].target);
-      setSecondaryMuscles(exercises[page].secondaryMuscles);
-      setInstructions(exercises[page].instructions);
+    if (show === true && exercises.length !== 0) {
+      setBodyPart(exercises[page - 1].bodyPart);
+      setEquipment(exercises[page - 1].equipment);
+      setGif(exercises[page - 1].gifUrl);
+      setWorkOutName(exercises[page - 1].name);
+      setTargetMuscle(exercises[page - 1].target);
+      setSecondaryMuscles(exercises[page - 1].secondaryMuscles);
+      setInstructions(exercises[page - 1].instructions);
     }
   };
 
   useEffect(() => {
     handlePagination();
-  }, [page]);
-
-  
+  }, [page, show]);
 
   return (
     <Box
@@ -112,7 +108,7 @@ const SearchWorkout = () => {
             justifyContent: "center",
             marginBottom: "10px",
             marginTop: "20px",
-            width: "70%",
+            width: "50%",
             padding: "40px 30px",
             backdropFilter: "blur(10px)",
             backgroundColor: "rgba(255,255,255,0.4)",
@@ -197,68 +193,117 @@ const SearchWorkout = () => {
               />
             </Box>
             <Stack
-              direction="row"
-              sx={{ display: "flex", justifyContent: "space-between",width:"100%",marginBottom:"15px" }}
+              direction="column"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                marginBottom: "15px",
+              }}
               spacing={2}
             >
               <Typography
                 sx={{
                   fontFamily: `"Fraunces", serif`,
-                  fontWeight: "700",
+                  fontWeight: "500",
                   fontSize: "20px",
-                  width:"50%",
-                  display:"flex",
-                  justifyContent:"flex-start",
-                  gap:1,
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: 1,
                 }}
               >
-                <span style={{marginLeft:"10px"}}>Name:</span> {workout_name}
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontWeight: "700",
+                    fontSize: "25px",
+                  }}
+                >
+                  Name:
+                </span>{" "}
+                {workout_name}
               </Typography>
               <Typography
                 sx={{
                   fontFamily: `"Fraunces", serif`,
-                  fontWeight: "700",
+                  fontWeight: "500",
                   fontSize: "20px",
-                  width:"50%",
-                  display:"flex",
-                  justifyContent:"flex-start",
-                  gap:1
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: 1,
                 }}
               >
-                <span style={{marginLeft:"10px"}}>BodyPart:</span>{bodypart}
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontWeight: "700",
+                    fontSize: "25px",
+                  }}
+                >
+                  BodyPart:
+                </span>
+                {bodypart}
               </Typography>
             </Stack>
             <Stack
-              direction="row"
-              sx={{ display: "flex", justifyContent: "space-between",width:"100%",marginBottom:"15px"}}
+              direction="column"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                marginBottom: "15px",
+              }}
               spacing={2}
             >
               <Typography
                 sx={{
                   fontFamily: `"Fraunces", serif`,
-                  fontWeight: "700",
+                  fontWeight: "500",
                   fontSize: "20px",
-                  width:"50%",
-                  display:"flex",
-                  justifyContent:"flex-start",
-                  gap:1
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: 1,
                 }}
               >
-                <span style={{marginLeft:"10px"}}>Target muscle:</span>
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontWeight: "700",
+                    fontSize: "25px",
+                  }}
+                >
+                  Target muscle:
+                </span>
                 {targetMuscle}
               </Typography>
               <Typography
                 sx={{
                   fontFamily: `"Fraunces", serif`,
-                  fontWeight: "700",
+                  fontWeight: "500",
                   fontSize: "20px",
-                  width:"50%",
-                  display:"flex",
-                  justifyContent:"flex-start",
-                  gap:1
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: 1,
                 }}
               >
-                <span style={{marginLeft:"10px"}}>Equipment:</span> {equipment}
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontWeight: "700",
+                    fontSize: "25px",
+                  }}
+                >
+                  Equipment:
+                </span>{" "}
+                {equipment}
               </Typography>
             </Stack>
             <Stack
@@ -268,12 +313,13 @@ const SearchWorkout = () => {
               <Typography
                 sx={{
                   fontFamily: `"Fraunces", serif`,
-                  fontWeight: "700",
+                  fontWeight: "500",
                   fontSize: "20px",
-                  
                 }}
               >
-                Secondary Muscles:
+                <span style={{ fontWeight: "700", fontSize: "25px" }}>
+                  Secondary Muscles:
+                </span>
                 <ul>
                   {secondaryMuscles.map((item) => (
                     <li>{item}</li>
@@ -284,11 +330,13 @@ const SearchWorkout = () => {
               <Typography
                 sx={{
                   fontFamily: `"Fraunces", serif`,
-                  fontWeight: "700",
+                  fontWeight: "500",
                   fontSize: "20px",
                 }}
               >
-                Instructions:
+                <span style={{ fontWeight: "700", fontSize: "25px" }}>
+                  Instructions:
+                </span>
                 <ul>
                   {instruction.map((item) => (
                     <li>{item}</li>
@@ -305,10 +353,10 @@ const SearchWorkout = () => {
               }}
             >
               <Pagination
-                count={exercises.length-1}
+                count={exercises.length - 1}
                 color="primary"
                 defaultPage={1}
-                onChange={(e,p) => setPage(p)}
+                onChange={(e, p) => setPage(p)}
               />
             </Box>
           </Box>

@@ -49,11 +49,11 @@ const SearchRecepies = () => {
       sx={{
         // backgroundColor: "yellow",
         padding: "10px",
-        height: recepies.length == 0 ? "96.2vh" : "200vh",
+        height: show ? "" : "96.2vh",
         background: "linear-gradient(#FFF9D0,#76ABAE)",
-        backgroundImage: "url('images/food5.jpg')",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        // backgroundImage: "url('images/food5.jpg')",
+        // backgroundSize: "cover",
+        // backgroundRepeat: "no-repeat",
       }}
     >
       <NavBar />
@@ -73,53 +73,60 @@ const SearchRecepies = () => {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
-          gap: 2,
           justifyContent: "center",
+          alignItems: "center",
           marginBottom: "20px",
-          marginTop: "20px",
-          width: "70%",
-          position: "absolute",
-          left: "50%",
-          transform: "translateX(-50%)",
-          padding: "40px 30px",
-          backdropFilter: "blur(10px)",
-          backgroundColor: "rgba(255,255,255,0.4)",
-          borderRadius:"20px"
         }}
       >
-        <TextField
-          variant="outlined"
-          label="Search for tasty yet healthy recepies"
+        <Box
           sx={{
-            width: "70%",
-            "& fieldset": {
-              borderColor: "black",
-              fontFamily: `"Fraunces", serif`,
-            },
-            "& label": { color: "black", fontFamily: `"Fraunces", serif` },
-            "& input": { color: "black", fontFamily: `"Fraunces", serif` },
-            "&:hover": {
-              borderColor: "black",
-              fontFamily: `"Fraunces", serif`,
-            },
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            justifyContent: "center",
+            marginBottom: "20px",
+            marginTop: "20px",
+            width: "50%",
+            padding: "40px 30px",
+            backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(255,255,255,0.4)",
+            borderRadius: "20px",
           }}
-          onChange={(e) => setSearchRec(e.target.value)}
-        />
-        <Button
-          variant="contained"
-          sx={{
-            width: "20%",
-            "&:hover": { backgroundColor: "black", scale: "110%" },
-            "&:active": { scale: "90%" },
-            transition: "0.2s ease-in-out",
-            fontFamily: `"Fraunces", serif`,
-          }}
-          onClick={handleSearch}
         >
-          Search
-        </Button>
+          <TextField
+            variant="outlined"
+            label="Search for tasty yet healthy recepies"
+            sx={{
+              width: "70%",
+              "& fieldset": {
+                borderColor: "black",
+                fontFamily: `"Fraunces", serif`,
+              },
+              "& label": { color: "black", fontFamily: `"Fraunces", serif` },
+              "& input": { color: "black", fontFamily: `"Fraunces", serif` },
+              "&:hover": {
+                borderColor: "black",
+                fontFamily: `"Fraunces", serif`,
+              },
+            }}
+            onChange={(e) => setSearchRec(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            sx={{
+              width: "20%",
+              "&:hover": { backgroundColor: "black", scale: "110%" },
+              "&:active": { scale: "90%" },
+              transition: "0.2s ease-in-out",
+              fontFamily: `"Fraunces", serif`,
+            }}
+            onClick={handleSearch}
+          >
+            Search
+          </Button>
+        </Box>
       </Box>
+
       <Box
         sx={{
           display: showLoader ? "flex" : "none",
@@ -130,63 +137,70 @@ const SearchRecepies = () => {
       >
         <CircularProgress />
       </Box>
-
-      {show ? (
-        recepies.map((item) => (
-          <Accordion sx={{ marginBottom: "20px" }}>
-            <AccordionSummary
-              expandIcon={<ArrowDownwardIcon sx={{ color: "white" }} />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-              sx={{ backgroundColor: "#000", color: "#fff" }}
-            >
-              <Typography
-                sx={{ fontSize: "2em", fontFamily: `"Fraunces", serif` }}
+      <Box>
+        {show ? (
+          recepies.map((item) => (
+            <Accordion sx={{ marginBottom: "20px" }}>
+              <AccordionSummary
+                expandIcon={<ArrowDownwardIcon sx={{ color: "white" }} />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+                sx={{ backgroundColor: "#000", color: "#fff" }}
               >
-                {item.title}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Box>
                 <Typography
-                  sx={{
-                    fontSize: "1.3em",
-                    fontWeight: 800,
-                    marginBottom: "10px",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
+                  sx={{ fontSize: "2em", fontFamily: `"Fraunces", serif` }}
                 >
-                  Ingredients
+                  {item.title}
                 </Typography>
-                <Typography
-                  sx={{ marginBottom: "20px", fontFamily: `"Fraunces", serif` }}
-                >
-                  {item.ingredients}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    fontSize: "1.3em",
-                    fontWeight: 800,
-                    marginBottom: "10px",
-                    fontFamily: `"Fraunces", serif`,
-                  }}
-                >
-                  Instructions
-                </Typography>
-                <Typography
-                  sx={{ marginBottom: "20px", fontFamily: `"Fraunces", serif` }}
-                >
-                  {item.instructions}
-                </Typography>
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-        ))
-      ) : (
-        <></>
-      )}
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontSize: "1.3em",
+                      fontWeight: 800,
+                      marginBottom: "10px",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    Ingredients
+                  </Typography>
+                  <Typography
+                    sx={{
+                      marginBottom: "20px",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    {item.ingredients}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontSize: "1.3em",
+                      fontWeight: 800,
+                      marginBottom: "10px",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    Instructions
+                  </Typography>
+                  <Typography
+                    sx={{
+                      marginBottom: "20px",
+                      fontFamily: `"Fraunces", serif`,
+                    }}
+                  >
+                    {item.instructions}
+                  </Typography>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          ))
+        ) : (
+          <></>
+        )}
+      </Box>
     </Box>
   );
 };

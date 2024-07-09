@@ -29,36 +29,44 @@ const TrackWorkout = ({ snackbar }) => {
   const [message, setMessage] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [workouts, setWorkouts] = useState([]);
-
+  const [change, setChange] = useState(false);
+  const [err, setErr] = useState(false);
   const handleSearch = async () => {
-    try {
-      setShowLoader(true);
-      setShow(false);
-      const response = await axios.post(
-        "https://trackapi.nutritionix.com/v2/natural/exercise",
-        {
-          query: message,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "x-app-id": "1a299a7b",
-            "x-app-key": "eedf9d333e690c05a2e66f2f26ff301c",
+    if (message !== "") {
+      setErr(false)
+      try {
+        setShowLoader(true);
+        setShow(false);
+        const response = await axios.post(
+          "https://trackapi.nutritionix.com/v2/natural/exercise",
+          {
+            query: message,
           },
-        }
-      );
-      // console.log(response.data.exercises[0].name);
-      setShowLoader(false);
-      setExName(response.data.exercises[0].name);
-      setBurnedCalories(response.data.exercises[0].nf_calories);
-      setDuration(response.data.exercises[0].duration_min);
-      setShow(true);
-    } catch (error) {
-      console.error(error);
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-app-id": "1a299a7b",
+              "x-app-key": "eedf9d333e690c05a2e66f2f26ff301c",
+            },
+          }
+        );
+        // console.log(response.data.exercises[0].name);
+        setShowLoader(false);
+        setExName(response.data.exercises[0].name);
+        setBurnedCalories(response.data.exercises[0].nf_calories);
+        setDuration(response.data.exercises[0].duration_min);
+        setShow(true);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    else{
+      setErr(true);
     }
   };
 
   const handleTrackWorkout = () => {
+    setChange(!change);
     axios
       .post("/trackworkout", {
         name: message,
@@ -79,24 +87,24 @@ const TrackWorkout = ({ snackbar }) => {
     axios
       .get("/getworkout")
       .then((response) => {
-        console.log(response.data);
         setWorkouts(response.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [change]);
 
   return (
     <Box
       sx={{
         backgroundColor: "yellow",
         padding: "10px",
-        height: show ? "120vh" : "96.2vh",
-        // background: "linear-gradient(#FFF9D0,#76ABAE)",
-        backgroundImage: "url('images/gymimage.jpg')",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        height: show ? "" : "120vh",
+        background: "linear-gradient(#FFF9D0,#76ABAE)",
+        // backgroundImage: "url('images/gymimage.jpg')",
+        // backgroundSize: "cover",
+        // backgroundRepeat: "no-repeat",
+        // backgroundAttachment:"fixed"
       }}
     >
       <NavBar />
@@ -108,7 +116,7 @@ const TrackWorkout = ({ snackbar }) => {
           fontFamily: `"Fraunces", serif`,
           fontWeight: "700",
           fontSize: "40px",
-          color: "white",
+          color: "black",
         }}
       >
         Track your workouts here
@@ -141,6 +149,8 @@ const TrackWorkout = ({ snackbar }) => {
             variant="outlined"
             label="Enter your workouts with the duration in minutes"
             onChange={(e) => setMessage(e.target.value)}
+            error={err}
+            helperText={err ? "Please add the name of the workout" : ""}
             sx={{
               width: "70%",
               "& fieldset": {
@@ -189,13 +199,16 @@ const TrackWorkout = ({ snackbar }) => {
               id="panel1-header"
               // sx={{'& .MuiAccordionSummary-content':{textAlign:'center'}}}
               sx={{
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(255,255,255,0.3)",
+                backgroundColor: "#A0DEFF",
               }}
             >
               Today's Workouts
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails
+              sx={{
+                backgroundColor: "#CAF4FF",
+              }}
+            >
               <Typography
                 sx={{
                   width: "100%",
@@ -244,7 +257,8 @@ const TrackWorkout = ({ snackbar }) => {
                     justifyContent: "center",
                     alignItems: "center",
                     borderTopRightRadius: "10px",
-                    borderBottomRightRadius:workouts.length === 0 ? "10px":"",
+                    borderBottomRightRadius:
+                      workouts.length === 0 ? "10px" : "",
                     height: "50px",
                     fontSize: "20px",
                     fontWeight: "700",
@@ -254,68 +268,84 @@ const TrackWorkout = ({ snackbar }) => {
                   Duration
                 </span>
               </Typography>
-              {workouts.map((item, i) => (
+              {workouts.length !== 0 ? (
+                workouts.map((item, i) => (
+                  <Typography
+                    key={i}
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        border: "2px solid black",
+                        width: "33%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        // borderTopLeftRadius: i === workouts.length-1 ? "10px":"",
+                        borderBottomLeftRadius:
+                          i === workouts.length - 1 ? "10px" : "",
+                        height: "50px",
+                        fontSize: "15px",
+                        fontWeight: "700",
+                        fontFamily: `"Fraunces", serif`,
+                      }}
+                    >
+                      {item.workout_name}
+                    </span>
+                    <span
+                      style={{
+                        border: "2px solid black",
+                        width: "33%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "50px",
+                        fontSize: "15px",
+                        fontWeight: "700",
+                        fontFamily: `"Fraunces", serif`,
+                      }}
+                    >
+                      {item.workout_calories} kcal
+                    </span>
+                    <span
+                      style={{
+                        border: "2px solid black",
+                        width: "33%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        // borderTopRightRadius: "10px",
+                        borderBottomRightRadius:
+                          i === workouts.length - 1 ? "10px" : "",
+                        height: "50px",
+                        fontSize: "15px",
+                        fontWeight: "700",
+                        fontFamily: `"Fraunces", serif`,
+                      }}
+                    >
+                      {item.workout_duration} mins
+                    </span>
+                  </Typography>
+                ))
+              ) : (
                 <Typography
-                  key={i}
                   sx={{
-                    width: "100%",
                     display: "flex",
-                    justifyContent: "center",
                     alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    marginTop: "20px",
+                    fontFamily: `"Fraunces", serif`,
                   }}
                 >
-                  <span
-                    style={{
-                      border: "2px solid black",
-                      width: "33%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      // borderTopLeftRadius: i === workouts.length-1 ? "10px":"",
-                      borderBottomLeftRadius: i === workouts.length-1 ? "10px":"",
-                      height: "50px",
-                      fontSize: "15px",
-                      fontWeight: "700",
-                      fontFamily: `"Fraunces", serif`,
-                    }}
-                    
-                  >
-                    {item.workout_name}
-                  </span>
-                  <span
-                    style={{
-                      border: "2px solid black",
-                      width: "33%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "50px",
-                      fontSize: "15px",
-                      fontWeight: "700",
-                      fontFamily: `"Fraunces", serif`,
-                    }}
-                  >
-                    {item.workout_calories}
-                  </span>
-                  <span
-                    style={{
-                      border: "2px solid black",
-                      width: "33%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      // borderTopRightRadius: "10px",
-                      borderBottomRightRadius: i === workouts.length-1 ? "10px":"",
-                      height: "50px",
-                      fontSize: "15px",
-                      fontWeight: "700",
-                      fontFamily: `"Fraunces", serif`,
-                    }}
-                  >
-                    {item.workout_duration}
-                  </span>
+                  No Workouts tracked yet
                 </Typography>
-              ))}
+              )}
             </AccordionDetails>
           </Accordion>
         </Box>
