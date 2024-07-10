@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavBar from "./NavBar";
 import Slide from "@mui/material/Slide";
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -52,6 +52,8 @@ const Profile = ({ snackbar }) => {
     newPass: false,
     confirmPass: false,
   });
+
+  const checkpass = useRef(false);
 
   const [open, setOpen] = React.useState(false);
 
@@ -147,7 +149,15 @@ const Profile = ({ snackbar }) => {
         setGender(response.data[0].gender);
         setAge(response.data[0].age);
         setCheck(false);
-        // console.log(bmi)
+        if (
+          response.data[0].password === null ||
+          response.data[0].password === ""
+        ) {
+          checkpass.current = true;
+          snackbar({message:"Please add a new Password",severity:"warning"})
+        } else {
+          checkpass.current = false;
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -155,7 +165,6 @@ const Profile = ({ snackbar }) => {
   }, [showBMIGauge]);
 
   const gender = ["Male", "Female", "Other"];
-  // const activity = [{}]
   return (
     <Box>
       <Box
@@ -187,7 +196,6 @@ const Profile = ({ snackbar }) => {
         <NavBar />
         <Stack
           sx={{
-            // border: "1px solid black",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -195,12 +203,10 @@ const Profile = ({ snackbar }) => {
         >
           <Stack
             sx={{
-              // border: "1px solid black",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               width: "60%",
-              // boxShadow: "5px 5px 20px grey",
               borderRadius: "20px",
               padding: "15px",
               backdropFilter: "blur(10px)",
@@ -462,23 +468,6 @@ const Profile = ({ snackbar }) => {
                 }}
               />
 
-              {/* <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "10px",
-              }}
-            >
-              <Gauge
-                width={200}
-                height={200}
-                value={bmi}
-                valueMin={0}
-                valueMax={60}
-              />
-            </Box> */}
-
               <TextField
                 variant="outlined"
                 label="Your Current Maintainance Calories"
@@ -586,6 +575,7 @@ const Profile = ({ snackbar }) => {
                             borderColor: "black",
                             fontFamily: `"Fraunces", serif`,
                           },
+                          display: checkpass.current ? "none":"flex"
                         }}
                         InputProps={{
                           endAdornment: (

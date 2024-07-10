@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Outlet,Navigate } from 'react-router-dom'
+import FitnessContext from '../FitnessContext';
 
 const ProtectedRoutes = () => {
-  const user = null;
+  const {cookie} = useContext(FitnessContext)
+  const user = cookie;
   return user ? <Outlet/> : <Navigate to="/"/>
 }
 
