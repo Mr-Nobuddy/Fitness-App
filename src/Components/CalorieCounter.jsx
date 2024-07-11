@@ -197,7 +197,7 @@ const Home = ({ snackbar }) => {
         );
         setMaxFat(Math.round((response.data[0].maintainance_cal * 0.3) / 9));
         setMaxFiber(30);
-        sleep(2000);
+        // sleep(2000);
         setCheck(false);
       })
       .catch((err) => {
@@ -251,7 +251,7 @@ const Home = ({ snackbar }) => {
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      <Box
+       <Box
         sx={{
           width: "100%",
           height: "100%",
@@ -262,7 +262,7 @@ const Home = ({ snackbar }) => {
         }}
       >
         <Loader />
-      </Box>
+      </Box> 
       <Box
         sx={{
           margin: 0,
