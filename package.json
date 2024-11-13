@@ -48,5 +48,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://fitness-backend-mu.vercel.app/"
+  "proxy": "http://localhost:2604"
 }
